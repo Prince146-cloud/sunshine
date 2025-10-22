@@ -21,18 +21,18 @@
 
     <style>
         :root {
-            /* The "Extraordinary" color palette - Charcoal, Mint, Gray */
-            --color-primary: #3EB489;     /* Mint Green */
-            --color-secondary: #98FB98;   /* Paler Mint */
-            --color-accent: #D3D3D3;      /* Light Gray */
-            --color-dark: #36454F;       /* Charcoal */
-            --color-neutral: #F5F5F5;     /* Very Light Gray */
+            /* The new "Maroon/Beige" color palette */
+            --color-primary: #A1251B;     /* Deep Maroon */
+            --color-secondary: #FF6600;   /* Bright Orange */
+            --color-accent: #F5E8C7;      /* Darker Beige */
+            --color-dark: #3D2B1F;       /* Dark Brown */
+            --color-neutral: #FDF5E6;     /* Light Beige (for cards/testimonials) */
             
-            --color-light-bg: #FFFFFF;   /* White */
-            --color-light: #FFFFFF;
+            --color-light-bg: #FFF8E7;   /* Warm Beige (MAIN background) */
+            --color-light: #FFFFFF;      /* White */
             
-            --color-dark-text: #36454F; /* Charcoal text */
-            --color-light-text: #6c757d; /* Lighter grey for text */
+            --color-dark-text: #3D2B1F; /* Dark Brown text */
+            --color-light-text: #6b4f3f; /* Lighter brown for text */
         }
 
         /* Apply Fonts */
@@ -55,7 +55,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, var(--color-dark), #4a5a6a); /* Charcoal Gradient */
+            background: linear-gradient(135deg, var(--color-primary), #c13e3e); /* Maroon Gradient */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -81,7 +81,7 @@
         }
 
         .loading-screen h2 {
-            color: var(--color-primary); /* Mint Green */
+            color: var(--color-accent); /* Darker Beige */
             font-size: 1.5rem; /* Adjusted for better fit */
             text-align: center;
             padding: 0 20px;
@@ -104,8 +104,8 @@
             to { opacity: 1; transform: translateY(0); }
         }
         @keyframes pulseGlow {
-            0%, 100% { box-shadow: 0 0 15px 5px rgba(62, 180, 137, 0.4); } /* Mint Glow */
-            50% { box-shadow: 0 0 25px 10px rgba(62, 180, 137, 0.6); } /* Mint Glow */
+            0%, 100% { box-shadow: 0 0 15px 5px rgba(161, 37, 27, 0.4); } /* Maroon Glow */
+            50% { box-shadow: 0 0 25px 10px rgba(161, 37, 27, 0.6); } /* Maroon Glow */
         }
         @keyframes subtleFloat {
             0%, 100% { transform: translateY(0px); }
@@ -121,24 +121,15 @@
         header {
             transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Faster transition */
             /* Added styles from .scrolled to make it permanent */
-            background-color: rgba(54, 69, 79, 0.95); /* Charcoal */
+            background-color: rgba(61, 43, 31, 0.95); /* Dark Brown */
             backdrop-filter: blur(10px);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
         }
-        /* header.scrolled class is no longer needed */
-        /*
-        header.scrolled {
-            background-color: rgba(54, 69, 79, 0.95); 
-            backdrop-filter: blur(10px);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        }
-        */
+        
         /* Update text colors for scrolled header */
-        /* Changed from header.scrolled to just header */
         header .text-logo {
-            color: var(--color-primary); /* Mint for logo text */
+            color: var(--color-primary); /* Maroon for logo text */
         }
-        /* Changed from header.scrolled to just header */
         header .nav-link-hover {
             color: var(--color-light); /* White for links */
         }
@@ -148,21 +139,14 @@
             transition: text-shadow 0.2s ease, color 0.2s ease; /* Faster */
         }
         .nav-link-hover:hover {
-            color: var(--color-primary); /* Mint Green */
-            text-shadow: 0 0 10px rgba(62, 180, 137, 0.5); /* Mint Glow */
+            color: var(--color-secondary); /* Bright Orange */
+            text-shadow: 0 0 10px rgba(255, 102, 0, 0.5); /* Orange Glow */
         }
-        /* This is redundant now, so it's removed */
-        /*
-        header.scrolled .nav-link-hover:hover {
-            color: var(--color-primary);
-            text-shadow: 0 0 10px rgba(62, 180, 137, 0.7);
-        }
-        */
 
 
         /* Hero Section Gradient & Parallax Container */
         .hero-bg-gradient {
-            background: linear-gradient(135deg, rgba(54, 69, 79, 0.85), rgba(54, 69, 79, 0.75)); /* Charcoal to Charcoal */
+            background: linear-gradient(135deg, rgba(61, 43, 31, 0.85), rgba(61, 43, 31, 0.75)); /* Dark Brown to Dark Brown */
         }
         .parallax-container {
              perspective: 1px;
@@ -179,7 +163,8 @@
              bottom: 0;
              left: 0;
              z-index: -1;
-             background-image: url('https://assets.bucketlistly.blog/sites/5adf778b6eabcc00190b75b1/content_entry5adf77af6eabcc00190b75b6/6075185986d092000b192d0a/files/best-free-travel-images-main-image-hd-op.webp');
+             /* UPDATED HERO IMAGE */
+             background-image: url('https://img.freepik.com/premium-photo/young-woman-beach-landing-planes-travel-concept_247622-11773.jpg');
              background-size: cover;
              background-position: center;
              background-attachment: fixed; /* Creates the parallax effect */
@@ -194,13 +179,13 @@
         .service-card {
             transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease; /* Faster */
             border: 1px solid transparent;
-            background-color: white;
-            box-shadow: 0 10px 20px rgba(54, 69, 79, 0.05); /* Charcoal shadow */
+            background-color: var(--color-light); /* White */
+            box-shadow: 0 10px 20px rgba(61, 43, 31, 0.05); /* Dark Brown shadow */
         }
         .service-card:hover {
             transform: translateY(-8px); /* Slightly less 'float' */
-            box-shadow: 0 15px 30px rgba(54, 69, 79, 0.1);
-            border-color: var(--color-primary); /* Mint border */
+            box-shadow: 0 15px 30px rgba(61, 43, 31, 0.1);
+            border-color: var(--color-primary); /* Maroon border */
         }
         .service-icon-wrapper {
             transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -215,11 +200,11 @@
         }
         .service-card:hover .animated-icon path:nth-child(1) {
             transform: translateX(2px) translateY(-2px);
-            fill: var(--color-secondary);
+            fill: var(--color-accent);
         }
         .service-card:hover .animated-icon path:nth-child(2) {
              transform: translateX(-1px) translateY(1px);
-            fill: var(--color-primary); /* Mint */
+            fill: var(--color-primary); /* Maroon */
         }
 
         /* Destination Card Hover */
@@ -232,7 +217,7 @@
         }
         .destination-overlay {
             /* Gradient overlay from bottom */
-            background: linear-gradient(to top, rgba(54, 69, 79, 0.8), transparent 60%); /* Charcoal */
+            background: linear-gradient(to top, rgba(61, 43, 31, 0.8), transparent 60%); /* Dark Brown */
             transition: opacity 0.3s ease;
             opacity: 0; /* Start hidden */
         }
@@ -242,7 +227,7 @@
 
         /* Testimonial Quote */
         .testimonial-card {
-            background-color: var(--color-neutral); /* Light Gray */
+            background-color: var(--color-neutral); /* Light Beige */
         }
         .testimonial-card::before {
             content: '“';
@@ -250,7 +235,7 @@
             top: 10px;
             left: 20px;
             font-size: 6rem;
-            color: var(--color-primary); /* Mint Green */
+            color: var(--color-primary); /* Maroon */
             opacity: 0.1;
             font-family: 'Times New Roman', Times, serif;
             z-index: 0;
@@ -269,8 +254,8 @@
         }
         .contact-form input:focus, .contact-form textarea:focus {
             background-color: rgba(255, 255, 255, 0.1);
-            box-shadow: 0 0 0 2px var(--color-primary);
-            border-color: var(--color-primary);
+            box-shadow: 0 0 0 2px var(--color-secondary); /* Orange glow */
+            border-color: var(--color-secondary); /* Orange border */
         }
 
         /* Scroll Top Button Pulse */
@@ -292,7 +277,7 @@
         /* Mobile Menu Animation */
         .burger div {
              transition: all 0.3s ease;
-             background-color: var(--color-primary); /* Mint Green */
+             background-color: var(--color-primary); /* Maroon */
         }
         .burger.active div:nth-child(1) {
              transform: rotate(-45deg) translate(-5px, 6px);
@@ -307,7 +292,7 @@
         #mobile-menu {
              transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1); /* Faster */
              transform: translateX(100%);
-             background-color: var(--color-light-bg);
+             background-color: var(--color-light-bg); /* Warm Beige */
         }
         #mobile-menu.active {
              transform: translateX(0);
@@ -316,7 +301,7 @@
             color: var(--color-primary);
         }
         #mobile-menu .bg-\[var\(--color-primary\)\] {
-            box-shadow: 0 5px 15px rgba(62, 180, 137, 0.3); /* Mint shadow */
+            box-shadow: 0 5px 15px rgba(161, 37, 27, 0.3); /* Maroon shadow */
         }
 
         /* Fade-in elements */
@@ -337,7 +322,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(54, 69, 79, 0.6); /* Charcoal overlay */
+            background-color: rgba(61, 43, 31, 0.6); /* Dark Brown overlay */
             backdrop-filter: blur(5px);
             display: flex;
             justify-content: center;
@@ -363,7 +348,7 @@
             margin-bottom: 20px;
         }
         .form-feedback-content button {
-            background-color: var(--color-primary); /* Mint Green */
+            background-color: var(--color-primary); /* Maroon */
             color: white;
             padding: 10px 20px;
             border: none;
@@ -372,8 +357,8 @@
             transition: background-color 0.2s ease, box-shadow 0.2s ease;
         }
         .form-feedback-content button:hover {
-            background-color: #359d76; /* Darker Mint */
-            box-shadow: 0 4px 15px rgba(62, 180, 137, 0.4);
+            background-color: #c13e3e; /* Darker Maroon */
+            box-shadow: 0 4px 15px rgba(161, 37, 27, 0.4);
         }
 
         /* Floating WhatsApp Button */
@@ -460,7 +445,7 @@
 
         <div class="relative z-10 px-6 max-w-3xl animate-fadeIn">
              <!-- Dynamic Greeting -->
-            <p id="dynamic-greeting" class="text-xl md:text-2xl mb-4 font-light text-[var(--color-secondary)]" style="text-shadow: 0 1px 3px rgba(0,0,0,0.3)">Your Journey Starts Here</p>
+            <p id="dynamic-greeting" class="text-xl md:text-2xl mb-4 font-light text-[var(--color-accent)]" style="text-shadow: 0 1px 3px rgba(0,0,0,0.3)">Your Journey Starts Here</p>
             <h1 class="text-5xl sm:text-6xl md:text-7xl font-bold mb-6 leading-tight drop-shadow-lg">Discover Your Next Adventure</h1>
             <p class="text-lg md:text-xl mb-10 font-light max-w-xl mx-auto drop-shadow-md text-gray-200">Seamless travel planning from Kigali to the world. Let SunShine Travel illuminate your path.</p>
             <a href="#contact" class="bg-[var(--color-primary)] text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-opacity-90 transition-all duration-300 shadow-xl hover:shadow-2xl hover:shadow-[var(--color-primary)]/50 transform hover:scale-105">Plan Your Trip Now</a>
@@ -494,22 +479,22 @@
         </section>
 
         <!-- Services Section -->
-        <section id="services" class="py-20 md:py-28 bg-white">
+        <section id="services" class="py-20 md:py-28 bg-[var(--color-light)]">
             <div class="container mx-auto px-6 max-w-7xl">
                 <h2 class="text-4xl md:text-5xl font-bold text-center text-[var(--color-dark)] mb-5">Our Premium Services</h2>
                 <span class="block w-20 h-1 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] mb-16 mx-auto rounded"></span>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
                     <!-- Service 1 -->
                     <div class="p-8 rounded-xl service-card fade-in-element">
-                        <div class="mb-5 inline-block p-4 rounded-full service-icon-wrapper" style="background-color: rgba(62, 180, 137, 0.1);">
-                            <svg class="w-10 h-10 text-[var(--color-primary)] animated-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path><path d="M12 11L3 21" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" fill="#98FB98"></path></svg>
+                        <div class="mb-5 inline-block p-4 rounded-full service-icon-wrapper" style="background-color: rgba(161, 37, 27, 0.1);">
+                            <svg class="w-10 h-10 text-[var(--color-primary)] animated-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path><path d="M12 11L3 21" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" fill="#F5E8C7"></path></svg>
                         </div>
                         <h3 class="text-2xl font-semibold mb-3 text-[var(--color-dark)]">Ticket Booking</h3>
                         <p class="text-[var(--color-dark-text)] leading-relaxed">Access the best deals on international and domestic flights, expertly managed by our team.</p>
                     </div>
                     <!-- Service 2 -->
                     <div class="p-8 rounded-xl service-card fade-in-element" style="transition-delay: 0.1s;">
-                        <div class="mb-5 inline-block p-4 rounded-full service-icon-wrapper" style="background-color: rgba(152, 251, 152, 0.1);">
+                        <div class="mb-5 inline-block p-4 rounded-full service-icon-wrapper" style="background-color: rgba(255, 102, 0, 0.1);">
                              <svg class="w-10 h-10 text-[var(--color-secondary)] animated-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 10v11h18V10M3 7l9-4 9 4M1 10h22v11H1z"></path><path d="M10 16h4m-2-3v3" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path></svg>
                         </div>
                         <h3 class="text-2xl font-semibold mb-3 text-[var(--color-dark)]">Visa Assistance</h3>
@@ -517,7 +502,7 @@
                     </div>
                     <!-- Service 3 -->
                     <div class="p-8 rounded-xl service-card fade-in-element" style="transition-delay: 0.2s;">
-                        <div class="mb-5 inline-block p-4 rounded-full service-icon-wrapper" style="background-color: rgba(62, 180, 137, 0.1);">
+                        <div class="mb-5 inline-block p-4 rounded-full service-icon-wrapper" style="background-color: rgba(161, 37, 27, 0.1);">
                              <svg class="w-10 h-10 text-[var(--color-primary)] opacity-70 animated-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-4m-2 0H3m4 0v-4a2 2 0 114 0v4m6 0v-4a2 2 0 10-4 0v4"></path><path d="M12 11h.01" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
                         </div>
                         <h3 class="text-2xl font-semibold mb-3 text-[var(--color-dark)]">Hotel Bookings</h3>
@@ -525,7 +510,7 @@
                     </div>
                     <!-- Service 4 -->
                     <div class="p-8 rounded-xl service-card fade-in-element" style="transition-delay: 0.3s;">
-                        <div class="mb-5 inline-block p-4 rounded-full service-icon-wrapper" style="background-color: rgba(62, 180, 137, 0.1);">
+                        <div class="mb-5 inline-block p-4 rounded-full service-icon-wrapper" style="background-color: rgba(161, 37, 27, 0.1);">
                             <svg class="w-10 h-10 text-[var(--color-primary)] animated-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                         </div>
                         <h3 class="text-2xl font-semibold mb-3 text-[var(--color-dark)]">Customized Tours</h3>
@@ -533,7 +518,7 @@
                     </div>
                     <!-- Service 5 -->
                     <div class="p-8 rounded-xl service-card fade-in-element" style="transition-delay: 0.4s;">
-                        <div class="mb-5 inline-block p-4 rounded-full service-icon-wrapper" style="background-color: rgba(152, 251, 152, 0.1);">
+                        <div class="mb-5 inline-block p-4 rounded-full service-icon-wrapper" style="background-color: rgba(255, 102, 0, 0.1);">
                              <svg class="w-10 h-10 text-[var(--color-secondary)] animated-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
                         </div>
                         <h3 class="text-2xl font-semibold mb-3 text-[var(--color-dark)]">Travel Insurance</h3>
@@ -541,7 +526,7 @@
                     </div>
                     <!-- Service 6 -->
                     <div class="p-8 rounded-xl service-card fade-in-element" style="transition-delay: 0.5s;">
-                         <div class="mb-5 inline-block p-4 rounded-full service-icon-wrapper" style="background-color: rgba(62, 180, 137, 0.1);">
+                         <div class="mb-5 inline-block p-4 rounded-full service-icon-wrapper" style="background-color: rgba(161, 37, 27, 0.1);">
                             <svg class="w-10 h-10 text-[var(--color-primary)] opacity-70 animated-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
                         </div>
                         <h3 class="text-2xl font-semibold mb-3 text-[var(--color-dark)]">Reliable Support</h3>
@@ -559,23 +544,23 @@
                          <img src="https://t4.ftcdn.net/jpg/02/80/82/81/360_F_280828158_ZZ2W8atYMHiSkLoDzxgDHNhdmXJ31jCR.jpg" alt="Beautiful travel destination beach" class="w-full h-auto object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x400/36454F/FFFFFF?text=Paradise';">
                     </div>
                     <div class="fade-in-element">
-                        <h2 class="text-4xl md:text-5xl font-bold mb-5 text-[var(--color-primary)]">Why Travel With SunShine?</h2>
+                        <h2 class="text-4xl md:text-5xl font-bold mb-5 text-[var(--color-secondary)]">Why Travel With SunShine?</h2>
                         <span class="block w-20 h-1 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] mb-6 rounded"></span>
                         <ul class="space-y-5 text-lg text-gray-300">
                             <li class="flex items-start space-x-3">
-                                <span class="text-[var(--color-primary)] text-2xl mt-1">✓</span>
+                                <span class="text-[var(--color-secondary)] text-2xl mt-1">✓</span>
                                 <span><strong class="font-semibold text-white">Local Expertise, Global Reach:</strong> Deep knowledge of Rwanda combined with worldwide travel connections.</span>
                             </li>
                             <li class="flex items-start space-x-3">
-                                <span class="text-[var(--color-primary)] text-2xl mt-1">✓</span>
+                                <span class="text-[var(--color-secondary)] text-2xl mt-1">✓</span>
                                 <span><strong class="font-semibold text-white">Personalized Itineraries:</strong> Travel plans crafted specifically around your interests, budget, and style.</span>
                             </li>
                             <li class="flex items-start space-x-3">
-                                <span class="text-[var(--color-primary)] text-2xl mt-1">✓</span>
+                                <span class="text-[var(--color-secondary)] text-2xl mt-1">✓</span>
                                 <span><strong class="font-semibold text-white">Value & Transparency:</strong> Competitive pricing with no hidden fees. We find the best value for your budget.</span>
                             </li>
                              <li class="flex items-start space-x-3">
-                                <span class="text-[var(--color-primary)] text-2xl mt-1">✓</span>
+                                <span class="text-[var(--color-secondary)] text-2xl mt-1">✓</span>
                                 <span><strong class="font-semibold text-white">Stress-Free Planning:</strong> We handle all the complexities, letting you anticipate your trip with excitement.</span>
                             </li>
                         </ul>
@@ -621,7 +606,7 @@
         </section>
 
         <!-- Testimonials -->
-        <section class="py-20 md:py-28 bg-white">
+        <section class="py-20 md:py-28 bg-[var(--color-light)]">
              <div class="container mx-auto px-6 max-w-6xl">
                  <h2 class="text-4xl md:text-5xl font-bold text-center text-[var(--color-dark)] mb-5">Hear From Our Happy Travelers</h2>
                 <span class="block w-20 h-1 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] mb-16 mx-auto rounded"></span>
@@ -677,10 +662,10 @@
                 <div class="grid md:grid-cols-2 gap-12">
                     <!-- Contact Info -->
                     <div class="fade-in-element">
-                        <h3 class="text-3xl font-semibold mb-6 text-[var(--color-primary)]">Contact Information</h3>
+                        <h3 class="text-3xl font-semibold mb-6 text-[var(--color-secondary)]">Contact Information</h3>
                         <div class="space-y-6">
                              <div class="flex items-start space-x-4">
-                                <i class="fas fa-map-marker-alt text-[var(--color-primary)] text-xl mt-1"></i>
+                                <i class="fas fa-map-marker-alt text-[var(--color-secondary)] text-xl mt-1"></i>
                                 <div>
                                     <h4 class="font-semibold text-white">Visit Us</h4>
                                     <p class="text-gray-300">KG 9 Ave, Kigali, Rwanda</p>
@@ -688,14 +673,14 @@
                                 </div>
                             </div>
                              <div class="flex items-start space-x-4">
-                                <i class="fas fa-phone text-[var(--color-primary)] text-xl mt-1"></i>
+                                <i class="fas fa-phone text-[var(--color-secondary)] text-xl mt-1"></i>
                                 <div>
                                     <h4 class="font-semibold text-white">Call Us</h4>
                                     <p class="text-gray-300">+250 783867795</p>
                                 </div>
                             </div>
                             <div class="flex items-start space-x-4">
-                                <i class="fas fa-envelope text-[var(--color-primary)] text-xl mt-1"></i>
+                                <i class="fas fa-envelope text-[var(--color-secondary)] text-xl mt-1"></i>
                                 <div>
                                     <h4 class="font-semibold text-white">Email Us</h4>
                                     <p class="text-gray-300">Sunstravel@yahoo.com</p>
@@ -703,7 +688,7 @@
                             </div>
                             <!-- Removed duplicate email entry -->
                             <div class="flex items-start space-x-4">
-                                <i class="fas fa-clock text-[var(--color-primary)] text-xl mt-1"></i>
+                                <i class="fas fa-clock text-[var(--color-secondary)] text-xl mt-1"></i>
                                 <div>
                                     <h4 class="font-semibold text-white">Business Hours</h4>
                                     <p class="text-gray-300">Mon - Fri: 8:00 AM - 6:00 PM<br>Sat: 9:00 AM - 4:00 PM</p>
@@ -711,9 +696,9 @@
                             </div>
                         </div>
                          <div class="mt-8">
-                            <h4 class="font-semibold mb-3 text-[var(--color-primary)]">Follow Us</h4>
+                            <h4 class="font-semibold mb-3 text-[var(--color-secondary)]">Follow Us</h4>
                             <div class="flex space-x-4">
-                                <a href="https://www.instagram.com/sunshine_kigali/" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-[var(--color-primary)] transition duration-300 text-2xl"><i class="fab fa-instagram"></i></a>
+                                <a href="https://www.instagram.com/sunshine_kigali/" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-[var(--color-secondary)] transition duration-300 text-2xl"><i class="fab fa-instagram"></i></a>
                                 <!-- Removed Facebook and Twitter -->
                             </div>
                         </div>
@@ -745,7 +730,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-[#2a3740] text-gray-400 py-12"> <!-- Even Deeper Charcoal -->
+    <footer class="bg-[#2b1d16] text-gray-400 py-12"> <!-- Even Deeper Brown -->
         <div class="container mx-auto px-6 max-w-7xl">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
                 <!-- Footer About -->
@@ -755,31 +740,31 @@
                 </div>
                 <!-- Footer Links -->
                 <div>
-                    <h4 class="font-semibold text-[var(--color-primary)] mb-4">Quick Links</h4>
+                    <h4 class="font-semibold text-[var(--color-secondary)] mb-4">Quick Links</h4>
                     <ul class="space-y-2">
-                        <li><a href="#about" class="hover:text-[var(--color-primary)] transition duration-300 text-sm">About Us</a></li>
-                        <li><a href="#services" class="hover:text-[var(--color-primary)] transition duration-300 text-sm">Services</a></li>
-                        <li><a href="#destinations" class="hover:text-[var(--color-primary)] transition duration-300 text-sm">Destinations</a></li>
-                        <li><a href="#contact" class="hover:text-[var(--color-primary)] transition duration-300 text-sm">Contact</a></li>
+                        <li><a href="#about" class="hover:text-[var(--color-secondary)] transition duration-300 text-sm">About Us</a></li>
+                        <li><a href="#services" class="hover:text-[var(--color-secondary)] transition duration-300 text-sm">Services</a></li>
+                        <li><a href="#destinations" class="hover:text-[var(--color-secondary)] transition duration-300 text-sm">Destinations</a></li>
+                        <li><a href="#contact" class="hover:text-[var(--color-secondary)] transition duration-300 text-sm">Contact</a></li>
                     </ul>
                 </div>
                 <!-- Footer Services -->
                  <div>
-                    <h4 class="font-semibold text-[var(--color-neutral)] mb-4">Services</h4>
+                    <h4 class="font-semibold text-[var(--color-accent)] mb-4">Services</h4>
                     <ul class="space-y-2">
-                        <li><a href="#services" class="hover:text-[var(--color-primary)] transition duration-300 text-sm">Flight Booking</a></li>
-                        <li><a href="#services" class="hover:text-[var(--color-primary)] transition duration-300 text-sm">Visa Assistance</a></li>
-                        <li><a href="#services" class="hover:text-[var(--color-primary)] transition duration-300 text-sm">Hotel Booking</a></li>
-                        <li><a href="#services" class="hover:text-[var(--color-primary)] transition duration-300 text-sm">Custom Tours</a></li>
+                        <li><a href="#services" class="hover:text-[var(--color-secondary)] transition duration-300 text-sm">Flight Booking</a></li>
+                        <li><a href="#services" class="hover:text-[var(--color-secondary)] transition duration-300 text-sm">Visa Assistance</a></li>
+                        <li><a href="#services" class="hover:text-[var(--color-secondary)] transition duration-300 text-sm">Hotel Booking</a></li>
+                        <li><a href="#services" class="hover:text-[var(--color-secondary)] transition duration-300 text-sm">Custom Tours</a></li>
                     </ul>
                 </div>
                 <!-- Footer Contact -->
                 <div>
-                     <h4 class="font-semibold text-[var(--color-primary)] mb-4">Connect</h4>
+                     <h4 class="font-semibold text-[var(--color-secondary)] mb-4">Connect</h4>
                      <p class="text-sm mb-3">KG 9 Ave, Kigali, Rwanda</p>
                      <p class="text-sm mb-3">Sunstravel@yahoo.com</p>
                      <div class="flex space-x-4 mt-4">
-                         <a href="https://www.instagram.com/sunshine_kigali/" target="_blank" rel="noopener noreferrer" class="hover:text-[var(--color-primary)] transition duration-300 text-xl"><i class="fab fa-instagram"></i></a>
+                         <a href="https://www.instagram.com/sunshine_kigali/" target="_blank" rel="noopener noreferrer" class="hover:text-[var(--color-secondary)] transition duration-300 text-xl"><i class="fab fa-instagram"></i></a>
                          <!-- Removed Facebook and Twitter -->
                      </div>
                 </div>
@@ -945,8 +930,8 @@
                         if (this.y > canvas.height) this.y = 0;
                     }
                     draw() {
-                        // Use Mint/Gray for particles
-                        ctx.fillStyle = `rgba(152, 251, 152, ${this.opacity * 0.5})`; // Paler Mint
+                        // Use Beige/Accent for particles
+                        ctx.fillStyle = `rgba(245, 232, 199, ${this.opacity * 0.7})`; // Darker Beige
                         ctx.beginPath();
                         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                         ctx.fill();
@@ -1017,12 +1002,11 @@
             }
 
             // --- Console Welcome Message ---
-             console.log('%c☀️ SunShine Travel & Tour Service Ltd ✈️', 'color: #3EB489; font-size: 24px; font-weight: bold; text-shadow: 1px 1px 0 #D3D3D3;');
-             console.log('%cReady for your next adventure? Contact us!', 'color: #36454F; font-size: 14px;');
+             console.log('%c☀️ SunShine Travel & Tour Service Ltd ✈️', 'color: #A1251B; font-size: 24px; font-weight: bold; text-shadow: 1px 1px 0 #F5E8C7;');
+             console.log('%cReady for your next adventure? Contact us!', 'color: #3D2B1F; font-size: 14px;');
 
         }); // End DOMContentLoaded
     </script>
 </body>
 </html>
-
 
