@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SunShine Travel & Tour Service Ltd - Kigali | Your Gateway to the World</title>
+    <meta name="description" content="Premier travel agency in Kigali, Rwanda offering bespoke international and domestic flight booking, visa assistance, hotel reservations, customized tours, and travel insurance.">
+    <meta name="keywords" content="Rwanda travel agency, Kigali travel, flights Rwanda, visa assistance Rwanda, hotels Kigali, tours Rwanda, travel insurance, SunShine Travel Kigali">
+    <meta name="author" content="SunShine Travel & Tour Service Ltd">
+    <!-- Favicon (using an emoji as placeholder) -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>☀️</text></svg>">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Google Fonts - Playfair Display (Headings) & Inter (Body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* The "Extraordinary" color palette - Charcoal, Mint, Gray */
+            --color-primary: #3EB489;     /* Mint Green */
+            --color-secondary: #98FB98;   /* Paler Mint */
+            --color-accent: #D3D3D3;      /* Light Gray */
+            --color-dark: #36454F;       /* Charcoal */
+            --color-neutral: #F5F5F5;     /* Very Light Gray */
+            
+            --color-light-bg: #FFFFFF;   /* White */
+            --color-light: #FFFFFF;
+            
+            --color-dark-text: #36454F; /* Charcoal text */
+            --color-light-text: #6c757d; /* Lighter grey for text */
+        }
+
+        /* Apply Fonts */
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+            background-color: var(--color-light-bg);
+            color: var(--color-dark-text);
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Playfair Display', serif;
+            letter-spacing: 0.5px;
+        }
+
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--color-dark), #4a5a6a); /* Charcoal Gradient */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            transition: opacity 0.5s ease-out, visibility 0.5s ease-out; /* Faster fade */
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .loading-screen img {
+            width: 150px;
+            height: auto;
+            border-radius: 15px; /* Soften edges */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            opacity: 0.8;
+        }
+
+        .loading-screen h2 {
+            color: var(--color-primary); /* Mint Green */
+            font-size: 1.5rem; /* Adjusted for better fit */
+            text-align: center;
+            padding: 0 20px;
+            margin-top: 25px;
+            font-weight: 500;
+            animation: fadeInUp 1s ease-out forwards;
+        }
+
+        /* Custom Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 15px 5px rgba(62, 180, 137, 0.4); } /* Mint Glow */
+            50% { box-shadow: 0 0 25px 10px rgba(62, 180, 137, 0.6); } /* Mint Glow */
+        }
+        @keyframes subtleFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+
+        /* Smooth Scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Header Styling */
+        header {
+            transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Faster transition */
+            /* Added styles from .scrolled to make it permanent */
+            background-color: rgba(54, 69, 79, 0.95); /* Charcoal */
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+        /* header.scrolled class is no longer needed */
+        /*
+        header.scrolled {
+            background-color: rgba(54, 69, 79, 0.95); 
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+        */
+        /* Update text colors for scrolled header */
+        /* Changed from header.scrolled to just header */
+        header .text-logo {
+            color: var(--color-primary); /* Mint for logo text */
+        }
+        /* Changed from header.scrolled to just header */
+        header .nav-link-hover {
+            color: var(--color-light); /* White for links */
+        }
+
+        /* Nav Link Hover Effect - Subtle Glow */
+        .nav-link-hover {
+            transition: text-shadow 0.2s ease, color 0.2s ease; /* Faster */
+        }
+        .nav-link-hover:hover {
+            color: var(--color-primary); /* Mint Green */
+            text-shadow: 0 0 10px rgba(62, 180, 137, 0.5); /* Mint Glow */
+        }
+        /* This is redundant now, so it's removed */
+        /*
+        header.scrolled .nav-link-hover:hover {
+            color: var(--color-primary);
+            text-shadow: 0 0 10px rgba(62, 180, 137, 0.7);
+        }
+        */
+
+
+        /* Hero Section Gradient & Parallax Container */
+        .hero-bg-gradient {
+            background: linear-gradient(135deg, rgba(54, 69, 79, 0.85), rgba(54, 69, 79, 0.75)); /* Charcoal to Charcoal */
+        }
+        .parallax-container {
+             perspective: 1px;
+             height: 100vh;
+             overflow-x: hidden;
+             overflow-y: auto;
+             margin-top: -80px; /* Adjust based on header height */
+             position: relative;
+        }
+        .parallax-bg {
+             position: absolute;
+             top: 0;
+             right: 0;
+             bottom: 0;
+             left: 0;
+             z-index: -1;
+             background-image: url('https://assets.bucketlistly.blog/sites/5adf778b6eabcc00190b75b1/content_entry5adf77af6eabcc00190b75b6/6075185986d092000b192d0a/files/best-free-travel-images-main-image-hd-op.webp');
+             background-size: cover;
+             background-position: center;
+             background-attachment: fixed; /* Creates the parallax effect */
+             transform: translateZ(-1px) scale(2); /* Parallax effect */
+             /* Add a creative filter */
+             filter: grayscale(10%) sepia(5%);
+             background-color: var(--color-dark);
+        }
+
+
+        /* Service Card Hover Effect - Border Illuminate */
+        .service-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease; /* Faster */
+            border: 1px solid transparent;
+            background-color: white;
+            box-shadow: 0 10px 20px rgba(54, 69, 79, 0.05); /* Charcoal shadow */
+        }
+        .service-card:hover {
+            transform: translateY(-8px); /* Slightly less 'float' */
+            box-shadow: 0 15px 30px rgba(54, 69, 79, 0.1);
+            border-color: var(--color-primary); /* Mint border */
+        }
+        .service-icon-wrapper {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .service-card:hover .service-icon-wrapper {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        /* Animated SVG Icon */
+        .animated-icon path {
+            transition: all 0.2s ease;
+        }
+        .service-card:hover .animated-icon path:nth-child(1) {
+            transform: translateX(2px) translateY(-2px);
+            fill: var(--color-secondary);
+        }
+        .service-card:hover .animated-icon path:nth-child(2) {
+             transform: translateX(-1px) translateY(1px);
+            fill: var(--color-primary); /* Mint */
+        }
+
+        /* Destination Card Hover */
+        .destination-card img {
+            transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), filter 0.3s ease; /* Faster */
+        }
+        .destination-card:hover img {
+            transform: scale(1.08);
+            filter: saturate(1.2);
+        }
+        .destination-overlay {
+            /* Gradient overlay from bottom */
+            background: linear-gradient(to top, rgba(54, 69, 79, 0.8), transparent 60%); /* Charcoal */
+            transition: opacity 0.3s ease;
+            opacity: 0; /* Start hidden */
+        }
+        .destination-card:hover .destination-overlay {
+            opacity: 1;
+        }
+
+        /* Testimonial Quote */
+        .testimonial-card {
+            background-color: var(--color-neutral); /* Light Gray */
+        }
+        .testimonial-card::before {
+            content: '“';
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            font-size: 6rem;
+            color: var(--color-primary); /* Mint Green */
+            opacity: 0.1;
+            font-family: 'Times New Roman', Times, serif;
+            z-index: 0;
+            line-height: 1;
+        }
+        .testimonial-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Contact Form Focus */
+        .contact-form input, .contact-form textarea {
+             background-color: rgba(255, 255, 255, 0.05); /* Very subtle on dark bg */
+             border-color: rgba(255, 255, 255, 0.2);
+             transition: all 0.2s ease;
+        }
+        .contact-form input:focus, .contact-form textarea:focus {
+            background-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 0 2px var(--color-primary);
+            border-color: var(--color-primary);
+        }
+
+        /* Scroll Top Button Pulse */
+        .scroll-top.visible {
+            animation: pulseGlow 2s infinite ease-in-out;
+        }
+
+        /* Particle Canvas */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -10; /* Behind everything */
+            pointer-events: none;
+        }
+
+        /* Mobile Menu Animation */
+        .burger div {
+             transition: all 0.3s ease;
+             background-color: var(--color-primary); /* Mint Green */
+        }
+        .burger.active div:nth-child(1) {
+             transform: rotate(-45deg) translate(-5px, 6px);
+        }
+        .burger.active div:nth-child(2) {
+             opacity: 0;
+        }
+        .burger.active div:nth-child(3) {
+             transform: rotate(45deg) translate(-5px, -6px);
+        }
+
+        #mobile-menu {
+             transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1); /* Faster */
+             transform: translateX(100%);
+             background-color: var(--color-light-bg);
+        }
+        #mobile-menu.active {
+             transform: translateX(0);
+        }
+        #mobile-menu a:hover {
+            color: var(--color-primary);
+        }
+        #mobile-menu .bg-\[var\(--color-primary\)\] {
+            box-shadow: 0 5px 15px rgba(62, 180, 137, 0.3); /* Mint shadow */
+        }
+
+        /* Fade-in elements */
+        .fade-in-element {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.4s ease-out, transform 0.4s ease-out; /* Faster */
+        }
+        .fade-in-element.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Modal for form submission feedback */
+        .form-feedback-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(54, 69, 79, 0.6); /* Charcoal overlay */
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10001;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+        }
+        .form-feedback-modal.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        .form-feedback-content {
+            background-color: white;
+            padding: 30px 40px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+            color: var(--color-dark-text);
+        }
+        .form-feedback-content p {
+            margin-bottom: 20px;
+        }
+        .form-feedback-content button {
+            background-color: var(--color-primary); /* Mint Green */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .form-feedback-content button:hover {
+            background-color: #359d76; /* Darker Mint */
+            box-shadow: 0 4px 15px rgba(62, 180, 137, 0.4);
+        }
+
+        /* Floating WhatsApp Button */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 20px;
+            right: 20px; /* Moved to the right */
+            width: 70px; /* Made bigger */
+            height: 70px; /* Made bigger */
+            background-color: #25D366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 40;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+        .whatsapp-float img {
+            width: 40px; /* Made bigger */
+            height: 40px; /* Made bigger */
+        }
+
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <img src="https://i.pinimg.com/originals/0d/77/5c/0d775c1489d49a96460db3d5e26474f5.gif" alt="Loading Animation">
+        <h2>Illuminating Your Next Journey...</h2>
+    </div>
+
+    <!-- Particle Canvas (Now styled with new colors in JS) -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- Header -->
+    <header id="header" class="fixed top-0 left-0 w-full z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center max-w-7xl">
+            <a href="#home" class="flex items-center space-x-3">
+                <img src="https://i.imgur.com/W7PgYCj.jpeg" alt="SunShine Travel Logo" class="h-14 w-auto rounded-md transition duration-300 ease-in-out hover:scale-105">
+                <span class="text-lg font-semibold text-[var(--color-primary)] leading-tight hidden sm:block text-logo transition-colors duration-300">SunShine Travel<br>& Tour Service Ltd</span>
+            </a>
+            <!-- Re-ordered links and removed text-[var(--color-dark-text)] -->
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#services" class="font-medium relative nav-link-hover">Services</a>
+                <a href="#destinations" class="font-medium relative nav-link-hover">Destinations</a>
+                <a href="#contact" class="font-medium relative nav-link-hover">Contact</a>
+                <a href="#about" class="font-medium relative nav-link-hover">About</a>
+                <a href="#contact" class="bg-[var(--color-primary)] text-white px-5 py-2 rounded-full font-semibold hover:bg-opacity-90 transition-all duration-300 shadow-md hover:shadow-lg hover:shadow-[var(--color-primary)]/40 transform hover:scale-105">Get Quote</a>
+            </div>
+            <!-- Mobile Menu Button -->
+            <button id="burger" class="md:hidden flex flex-col space-y-1.5 z-50 burger">
+                <div class="w-6 h-0.5 rounded"></div>
+                <div class="w-6 h-0.5 rounded"></div>
+                <div class="w-6 h-0.5 rounded"></div>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="fixed top-0 right-0 h-full w-full max-w-xs z-40 shadow-xl p-8 md:hidden">
+        <!-- Re-ordered mobile links -->
+        <nav class="flex flex-col space-y-6 mt-16">
+            <a href="#services" class="text-lg text-[var(--color-dark-text)] font-medium mobile-nav-link">Services</a>
+            <a href="#destinations" class="text-lg text-[var(--color-dark-text)] font-medium mobile-nav-link">Destinations</a>
+            <a href="#contact" class="text-lg text-[var(--color-dark-text)] font-medium mobile-nav-link">Contact</a>
+            <a href="#about" class="text-lg text-[var(--color-dark-text)] font-medium mobile-nav-link">About</a>
+            <a href="#contact" class="mt-4 inline-block bg-[var(--color-primary)] text-white px-6 py-3 rounded-full font-semibold hover:bg-opacity-90 transition duration-300 text-center">Get Quote</a>
+        </nav>
+    </div>
+
+
+    <!-- Hero Section -->
+    <section id="home" class="relative h-screen flex items-center justify-center text-center text-white parallax-container pt-[80px]">
+        <!-- Parallax Background -->
+        <div class="parallax-bg"></div>
+         <!-- Overlay -->
+        <div class="absolute inset-0 hero-bg-gradient z-0"></div>
+
+        <div class="relative z-10 px-6 max-w-3xl animate-fadeIn">
+             <!-- Dynamic Greeting -->
+            <p id="dynamic-greeting" class="text-xl md:text-2xl mb-4 font-light text-[var(--color-secondary)]" style="text-shadow: 0 1px 3px rgba(0,0,0,0.3)">Your Journey Starts Here</p>
+            <h1 class="text-5xl sm:text-6xl md:text-7xl font-bold mb-6 leading-tight drop-shadow-lg">Discover Your Next Adventure</h1>
+            <p class="text-lg md:text-xl mb-10 font-light max-w-xl mx-auto drop-shadow-md text-gray-200">Seamless travel planning from Kigali to the world. Let SunShine Travel illuminate your path.</p>
+            <a href="#contact" class="bg-[var(--color-primary)] text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-opacity-90 transition-all duration-300 shadow-xl hover:shadow-2xl hover:shadow-[var(--color-primary)]/50 transform hover:scale-105">Plan Your Trip Now</a>
+        </div>
+        <!-- Scroll Down Indicator -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-10 animate-bounce hidden md:block">
+            <svg class="w-8 h-8 text-white opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+        </div>
+    </section>
+
+    <!-- Main Content Wrapper -->
+    <main class="relative bg-[var(--color-light-bg)] z-10">
+
+        <!-- About Section -->
+        <section id="about" class="py-20 md:py-28">
+            <div class="container mx-auto px-6 max-w-6xl">
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div class="fade-in-element">
+                        <h2 class="text-4xl md:text-5xl font-bold text-[var(--color-dark)] mb-5">About SunShine Travel</h2>
+                        <span class="block w-20 h-1 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] mb-6 rounded"></span>
+                        <p class="text-[var(--color-dark-text)] text-lg mb-4 leading-relaxed">Welcome to SunShine Travel & Tour Service Ltd, Kigali's trusted name in travel. We're passionate about creating personalized journeys that inspire and delight.</p>
+                        <p class="text-[var(--color-dark-text)] mb-4 leading-relaxed">From securing the best flight deals and navigating visa complexities to crafting bespoke tour packages, our expert team ensures every detail is perfect. We combine local expertise with a global network to offer unparalleled service.</p>
+                        <p class="text-[var(--color-dark-text)] leading-relaxed">Let us handle the logistics, so you can focus on making memories. Your adventure awaits!</p>
+                    </div>
+                    <div class="fade-in-element rounded-xl overflow-hidden shadow-2xl transform transition duration-300 hover:scale-105 hover:shadow-[0_25px_50px_-12px_rgba(54,69,79,0.3)]">
+                        <!-- UPDATED IMAGE -->
+                        <img src="https://i2-prod.lancs.live/incoming/article30069642.ece/ALTERNATES/s615/0_Air-passenger-numbers.jpg" alt="Airport departure board" class="w-full h-auto object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x400/D88A96/FFFFFF?text=Travel+Moment';">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services" class="py-20 md:py-28 bg-white">
+            <div class="container mx-auto px-6 max-w-7xl">
+                <h2 class="text-4xl md:text-5xl font-bold text-center text-[var(--color-dark)] mb-5">Our Premium Services</h2>
+                <span class="block w-20 h-1 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] mb-16 mx-auto rounded"></span>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+                    <!-- Service 1 -->
+                    <div class="p-8 rounded-xl service-card fade-in-element">
+                        <div class="mb-5 inline-block p-4 rounded-full service-icon-wrapper" style="background-color: rgba(62, 180, 137, 0.1);">
+                            <svg class="w-10 h-10 text-[var(--color-primary)] animated-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path><path d="M12 11L3 21" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" fill="#98FB98"></path></svg>
+                        </div>
+                        <h3 class="text-2xl font-semibold mb-3 text-[var(--color-dark)]">Ticket Booking</h3>
+                        <p class="text-[var(--color-dark-text)] leading-relaxed">Access the best deals on international and domestic flights, expertly managed by our team.</p>
+                    </div>
+                    <!-- Service 2 -->
+                    <div class="p-8 rounded-xl service-card fade-in-element" style="transition-delay: 0.1s;">
+                        <div class="mb-5 inline-block p-4 rounded-full service-icon-wrapper" style="background-color: rgba(152, 251, 152, 0.1);">
+                             <svg class="w-10 h-10 text-[var(--color-secondary)] animated-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 10v11h18V10M3 7l9-4 9 4M1 10h22v11H1z"></path><path d="M10 16h4m-2-3v3" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path></svg>
+                        </div>
+                        <h3 class="text-2xl font-semibold mb-3 text-[var(--color-dark)]">Visa Assistance</h3>
+                        <p class="text-[var(--color-dark-text)] leading-relaxed">Simplify your visa application process with our professional guidance and support.</p>
+                    </div>
+                    <!-- Service 3 -->
+                    <div class="p-8 rounded-xl service-card fade-in-element" style="transition-delay: 0.2s;">
+                        <div class="mb-5 inline-block p-4 rounded-full service-icon-wrapper" style="background-color: rgba(62, 180, 137, 0.1);">
+                             <svg class="w-10 h-10 text-[var(--color-primary)] opacity-70 animated-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-4m-2 0H3m4 0v-4a2 2 0 114 0v4m6 0v-4a2 2 0 10-4 0v4"></path><path d="M12 11h.01" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                        </div>
+                        <h3 class="text-2xl font-semibold mb-3 text-[var(--color-dark)]">Hotel Bookings</h3>
+                        <p class="text-[var(--color-dark-text)] leading-relaxed">From luxury suites to cozy stays, find your perfect accommodation anywhere in the world.</p>
+                    </div>
+                    <!-- Service 4 -->
+                    <div class="p-8 rounded-xl service-card fade-in-element" style="transition-delay: 0.3s;">
+                        <div class="mb-5 inline-block p-4 rounded-full service-icon-wrapper" style="background-color: rgba(62, 180, 137, 0.1);">
+                            <svg class="w-10 h-10 text-[var(--color-primary)] animated-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                        </div>
+                        <h3 class="text-2xl font-semibold mb-3 text-[var(--color-dark)]">Customized Tours</h3>
+                        <p class="text-[var(--color-dark-text)] leading-relaxed">Bespoke itineraries for families and businesses, designed for unique and memorable experiences.</p>
+                    </div>
+                    <!-- Service 5 -->
+                    <div class="p-8 rounded-xl service-card fade-in-element" style="transition-delay: 0.4s;">
+                        <div class="mb-5 inline-block p-4 rounded-full service-icon-wrapper" style="background-color: rgba(152, 251, 152, 0.1);">
+                             <svg class="w-10 h-10 text-[var(--color-secondary)] animated-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                        </div>
+                        <h3 class="text-2xl font-semibold mb-3 text-[var(--color-dark)]">Travel Insurance</h3>
+                        <p class="text-[var(--color-dark-text)] leading-relaxed">Comprehensive coverage for peace of mind, ensuring you're protected on every trip.</p>
+                    </div>
+                    <!-- Service 6 -->
+                    <div class="p-8 rounded-xl service-card fade-in-element" style="transition-delay: 0.5s;">
+                         <div class="mb-5 inline-block p-4 rounded-full service-icon-wrapper" style="background-color: rgba(62, 180, 137, 0.1);">
+                            <svg class="w-10 h-10 text-[var(--color-primary)] opacity-70 animated-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                        </div>
+                        <h3 class="text-2xl font-semibold mb-3 text-[var(--color-dark)]">Reliable Support</h3>
+                        <p class="text-[var(--color-dark-text)] leading-relaxed">24/7 assistance for any travel queries or emergencies during your journey.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Why Choose Us / Integrated Image Section -->
+        <section class="py-20 md:py-28 bg-[var(--color-dark)] text-white">
+            <div class="container mx-auto px-6 max-w-6xl">
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div class="fade-in-element rounded-xl overflow-hidden shadow-2xl">
+                         <img src="https://t4.ftcdn.net/jpg/02/80/82/81/360_F_280828158_ZZ2W8atYMHiSkLoDzxgDHNhdmXJ31jCR.jpg" alt="Beautiful travel destination beach" class="w-full h-auto object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x400/36454F/FFFFFF?text=Paradise';">
+                    </div>
+                    <div class="fade-in-element">
+                        <h2 class="text-4xl md:text-5xl font-bold mb-5 text-[var(--color-primary)]">Why Travel With SunShine?</h2>
+                        <span class="block w-20 h-1 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] mb-6 rounded"></span>
+                        <ul class="space-y-5 text-lg text-gray-300">
+                            <li class="flex items-start space-x-3">
+                                <span class="text-[var(--color-primary)] text-2xl mt-1">✓</span>
+                                <span><strong class="font-semibold text-white">Local Expertise, Global Reach:</strong> Deep knowledge of Rwanda combined with worldwide travel connections.</span>
+                            </li>
+                            <li class="flex items-start space-x-3">
+                                <span class="text-[var(--color-primary)] text-2xl mt-1">✓</span>
+                                <span><strong class="font-semibold text-white">Personalized Itineraries:</strong> Travel plans crafted specifically around your interests, budget, and style.</span>
+                            </li>
+                            <li class="flex items-start space-x-3">
+                                <span class="text-[var(--color-primary)] text-2xl mt-1">✓</span>
+                                <span><strong class="font-semibold text-white">Value & Transparency:</strong> Competitive pricing with no hidden fees. We find the best value for your budget.</span>
+                            </li>
+                             <li class="flex items-start space-x-3">
+                                <span class="text-[var(--color-primary)] text-2xl mt-1">✓</span>
+                                <span><strong class="font-semibold text-white">Stress-Free Planning:</strong> We handle all the complexities, letting you anticipate your trip with excitement.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+         <!-- Destinations Preview -->
+        <section id="destinations" class="py-20 md:py-28 bg-[var(--color-light-bg)]">
+            <div class="container mx-auto px-6 max-w-7xl">
+                 <h2 class="text-4xl md:text-5xl font-bold text-center text-[var(--color-dark)] mb-5">Explore Inspiring Destinations</h2>
+                <span class="block w-20 h-1 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] mb-16 mx-auto rounded"></span>
+                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                     <!-- Card 1 -->
+                     <div class="relative rounded-xl overflow-hidden shadow-lg destination-card fade-in-element group">
+                         <!-- UPDATED IMAGE -->
+                         <img src="https://www.volcanoesparkrwanda.org/wp-content/uploads/2017/07/african-safari-sunset-750x450.jpg" alt="Rwanda Safari" class="w-full h-96 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x800/EF4B53/FFFFFF?text=Rwanda+Safari';">
+                         <div class="absolute inset-0 destination-overlay flex flex-col justify-end p-6">
+                             <h3 class="text-3xl font-semibold text-white mb-2">Rwanda Safari</h3>
+                             <p class="text-gray-200 text-sm">Encounter majestic wildlife in Akagera National Park.</p>
+                         </div>
+                     </div>
+                     <!-- Card 2 -->
+                     <div class="relative rounded-xl overflow-hidden shadow-lg destination-card fade-in-element group" style="transition-delay: 0.1s;">
+                         <img src="https://media.istockphoto.com/id/1394046056/photo/masai-warriors-on-beach-of-zanzibar.jpg?s=612x612&w=0&k=20&c=IwdGYBMPf7dl4nBOMroCOuLADunI8Rbdb1TNIjdgpnY=" alt="Zanzibar Beaches" class="w-full h-96 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x800/835E8C/FFFFFF?text=Zanzibar';">
+                         <div class="absolute inset-0 destination-overlay flex flex-col justify-end p-6">
+                             <h3 class="text-3xl font-semibold text-white mb-2">Zanzibar Beaches</h3>
+                             <p class="text-gray-200 text-sm">Relax on pristine white sands and explore Stone Town's history.</p>
+                         </div>
+                     </div>
+                     <!-- Card 3 -->
+                      <div class="relative rounded-xl overflow-hidden shadow-lg destination-card fade-in-element group" style="transition-delay: 0.2s;">
+                         <img src="https://media.istockphoto.com/id/2094534013/photo/a-family-on-a-city-break-enjoys-the-view-over-the-skyline-of-dubai.jpg?s=612x612&w=0&k=20&c=jI10fuM9BRk8MGDpYttnqqXu1WepcI0qKV52ETRi4Rs=" alt="Dubai Skylines" class="w-full h-96 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x800/D88A96/FFFFFF?text=Dubai';">
+                         <div class="absolute inset-0 destination-overlay flex flex-col justify-end p-6">
+                             <h3 class="text-3xl font-semibold text-white mb-2">Dubai Modernity</h3>
+                             <p class="text-gray-200 text-sm">Experience futuristic architecture and luxury shopping.</p>
+                         </div>
+                     </div>
+                 </div>
+                 <p class="text-center mt-12 text-[var(--color-dark-text)] opacity-80">These are just a few ideas. We tailor trips to countless destinations worldwide!</p>
+            </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section class="py-20 md:py-28 bg-white">
+             <div class="container mx-auto px-6 max-w-6xl">
+                 <h2 class="text-4xl md:text-5xl font-bold text-center text-[var(--color-dark)] mb-5">Hear From Our Happy Travelers</h2>
+                <span class="block w-20 h-1 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] mb-16 mx-auto rounded"></span>
+                <div class="grid md:grid-cols-3 gap-8">
+                     <!-- Testimonial 1 -->
+                    <div class="p-8 rounded-xl shadow-md testimonial-card fade-in-element">
+                         <div class="testimonial-content">
+                             <p class="text-[var(--color-dark-text)] mb-6 italic leading-relaxed text-lg">"SunShine Travel made our gorilla trekking adventure seamless and unforgettable. Highly professional and friendly!"</p>
+                             <div class="flex items-center">
+                                 <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-secondary)] flex items-center justify-center text-white font-semibold mr-4">AM</div>
+                                 <div>
+                                     <p class="font-semibold text-[var(--color-dark-text)]">Aline M.</p>
+                                     <p class="text-sm text-[var(--color-dark-text)] opacity-70">Kigali, Rwanda</p>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+                    <!-- Testimonial 2 -->
+                     <div class="p-8 rounded-xl shadow-md testimonial-card fade-in-element" style="transition-delay: 0.1s;">
+                         <div class="testimonial-content">
+                             <p class="text-[var(--color-dark-text)] mb-6 italic leading-relaxed text-lg">"Their visa assistance was a lifesaver for my business trip. Efficient, clear communication, and successful outcome."</p>
+                             <div class="flex items-center">
+                                 <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[var(--color-dark)] to-[var(--color-secondary)] flex items-center justify-center text-white font-semibold mr-4">BK</div>
+                                 <div>
+                                     <p class="font-semibold text-[var(--color-dark-text)]">Ben K.</p>
+                                     <p class="text-sm text-[var(--color-dark-text)] opacity-70">Nairobi, Kenya</p>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+                    <!-- Testimonial 3 -->
+                     <div class="p-8 rounded-xl shadow-md testimonial-card fade-in-element" style="transition-delay: 0.2s;">
+                         <div class="testimonial-content">
+                            <p class="text-[var(--color-dark-text)] mb-6 italic leading-relaxed text-lg">"Absolutely loved the customized family package to Europe. Everything was perfectly planned. Thank you SunShine!"</p>
+                             <div class="flex items-center">
+                                 <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-dark)] flex items-center justify-center text-white font-semibold mr-4">CU</div>
+                                 <div>
+                                     <p class="font-semibold text-[var(--color-dark-text)]">Chantal U.</p>
+                                     <p class="text-sm text-[var(--color-dark-text)] opacity-70">Kigali, Rwanda</p>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+                </div>
+             </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-20 md:py-28 bg-[var(--color-dark)] text-gray-200">
+            <div class="container mx-auto px-6 max-w-6xl">
+                 <h2 class="text-4xl md:text-5xl font-bold text-center text-white mb-5">Ready for Your Next Journey?</h2>
+                <span class="block w-20 h-1 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] mb-16 mx-auto rounded"></span>
+                <div class="grid md:grid-cols-2 gap-12">
+                    <!-- Contact Info -->
+                    <div class="fade-in-element">
+                        <h3 class="text-3xl font-semibold mb-6 text-[var(--color-primary)]">Contact Information</h3>
+                        <div class="space-y-6">
+                             <div class="flex items-start space-x-4">
+                                <i class="fas fa-map-marker-alt text-[var(--color-primary)] text-xl mt-1"></i>
+                                <div>
+                                    <h4 class="font-semibold text-white">Visit Us</h4>
+                                    <p class="text-gray-300">KG 9 Ave, Kigali, Rwanda</p>
+                                    <a href="https://www.google.com/maps/place/SunShine+travel+%26+Tour+service+ltd/@-1.9492274,30.0559528,17z" target="_blank" rel="noopener noreferrer" class="text-[var(--color-secondary)] hover:underline">View on Google Maps</a>
+                                </div>
+                            </div>
+                             <div class="flex items-start space-x-4">
+                                <i class="fas fa-phone text-[var(--color-primary)] text-xl mt-1"></i>
+                                <div>
+                                    <h4 class="font-semibold text-white">Call Us</h4>
+                                    <p class="text-gray-300">+250 783867795</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-4">
+                                <i class="fas fa-envelope text-[var(--color-primary)] text-xl mt-1"></i>
+                                <div>
+                                    <h4 class="font-semibold text-white">Email Us</h4>
+                                    <p class="text-gray-300">Sunstravel@yahoo.com</p>
+                                </div>
+                            </div>
+                            <!-- Removed duplicate email entry -->
+                            <div class="flex items-start space-x-4">
+                                <i class="fas fa-clock text-[var(--color-primary)] text-xl mt-1"></i>
+                                <div>
+                                    <h4 class="font-semibold text-white">Business Hours</h4>
+                                    <p class="text-gray-300">Mon - Fri: 8:00 AM - 6:00 PM<br>Sat: 9:00 AM - 4:00 PM</p>
+                                </div>
+                            </div>
+                        </div>
+                         <div class="mt-8">
+                            <h4 class="font-semibold mb-3 text-[var(--color-primary)]">Follow Us</h4>
+                            <div class="flex space-x-4">
+                                <a href="https://www.instagram.com/sunshine_kigali/" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-[var(--color-primary)] transition duration-300 text-2xl"><i class="fab fa-instagram"></i></a>
+                                <!-- Removed Facebook and Twitter -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Contact Form -->
+                    <form id="contactForm" class="space-y-6 fade-in-element contact-form" style="transition-delay: 0.1s;">
+                         <div>
+                            <label for="name" class="block text-sm font-medium mb-1 text-gray-300">Name</label>
+                            <input type="text" id="name" name="name" required class="w-full px-4 py-3 rounded-lg border focus:outline-none transition duration-300 text-white">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium mb-1 text-gray-300">Email</label>
+                            <input type="email" id="email" name="email" required class="w-full px-4 py-3 rounded-lg border focus:outline-none transition duration-300 text-white">
+                        </div>
+                        <div>
+                            <label for="subject" class="block text-sm font-medium mb-1 text-gray-300">Subject</label>
+                            <input type="text" id="subject" name="subject" required class="w-full px-4 py-3 rounded-lg border focus:outline-none transition duration-300 text-white">
+                        </div>
+                         <div>
+                            <label for="message" class="block text-sm font-medium mb-1 text-gray-300">Message</label>
+                            <textarea id="message" name="message" rows="5" required class="w-full px-4 py-3 rounded-lg border focus:outline-none transition duration-300 text-white resize-none"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-[var(--color-primary)] text-white px-6 py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-all duration-300 shadow-md hover:shadow-lg hover:shadow-[var(--color-primary)]/40 transform hover:scale-[1.02]">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#2a3740] text-gray-400 py-12"> <!-- Even Deeper Charcoal -->
+        <div class="container mx-auto px-6 max-w-7xl">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <!-- Footer About -->
+                <div>
+                    <img src="https://i.imgur.com/W7PgYCj.jpeg" alt="SunShine Travel Logo" class="h-12 w-auto mb-4 rounded-md">
+                    <p class="text-sm">Illuminating your path to unforgettable journeys. Your trusted travel partner in Kigali.</p>
+                </div>
+                <!-- Footer Links -->
+                <div>
+                    <h4 class="font-semibold text-[var(--color-primary)] mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#about" class="hover:text-[var(--color-primary)] transition duration-300 text-sm">About Us</a></li>
+                        <li><a href="#services" class="hover:text-[var(--color-primary)] transition duration-300 text-sm">Services</a></li>
+                        <li><a href="#destinations" class="hover:text-[var(--color-primary)] transition duration-300 text-sm">Destinations</a></li>
+                        <li><a href="#contact" class="hover:text-[var(--color-primary)] transition duration-300 text-sm">Contact</a></li>
+                    </ul>
+                </div>
+                <!-- Footer Services -->
+                 <div>
+                    <h4 class="font-semibold text-[var(--color-neutral)] mb-4">Services</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#services" class="hover:text-[var(--color-primary)] transition duration-300 text-sm">Flight Booking</a></li>
+                        <li><a href="#services" class="hover:text-[var(--color-primary)] transition duration-300 text-sm">Visa Assistance</a></li>
+                        <li><a href="#services" class="hover:text-[var(--color-primary)] transition duration-300 text-sm">Hotel Booking</a></li>
+                        <li><a href="#services" class="hover:text-[var(--color-primary)] transition duration-300 text-sm">Custom Tours</a></li>
+                    </ul>
+                </div>
+                <!-- Footer Contact -->
+                <div>
+                     <h4 class="font-semibold text-[var(--color-primary)] mb-4">Connect</h4>
+                     <p class="text-sm mb-3">KG 9 Ave, Kigali, Rwanda</p>
+                     <p class="text-sm mb-3">Sunstravel@yahoo.com</p>
+                     <div class="flex space-x-4 mt-4">
+                         <a href="https://www.instagram.com/sunshine_kigali/" target="_blank" rel="noopener noreferrer" class="hover:text-[var(--color-primary)] transition duration-300 text-xl"><i class="fab fa-instagram"></i></a>
+                         <!-- Removed Facebook and Twitter -->
+                     </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 pt-8 text-center text-sm">
+                &copy; <span id="currentYear"></span> SunShine Travel & Tour Service Ltd. All rights reserved. Designed with ❤️.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll-to-Top Button -->
+    <button id="scrollTop" class="scroll-top fixed bottom-24 right-8 w-12 h-12 bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-secondary)] text-white rounded-full shadow-lg opacity-0 invisible transition-all duration-300 ease-in-out hover:scale-110 focus:outline-none z-40">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+     <!-- Floating WhatsApp Button -->
+     <a href="https://wa.me/250783867795" target="_blank" rel="noopener noreferrer" class="whatsapp-float" aria-label="Chat on WhatsApp">
+        <!-- UPDATED IMAGE -->
+        <img src="https://png.pngtree.com/png-clipart/20190303/ourmid/pngtree-whatsapp-icon-logo-png-image_771436.jpg" alt="WhatsApp" class="rounded-full">
+     </a>
+
+     <!-- Form Feedback Modal -->
+    <div id="formFeedbackModal" class="form-feedback-modal">
+        <div class="form-feedback-content">
+            <p id="feedbackMessage"></p>
+            <button id="closeFeedbackModal">OK</button>
+        </div>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Loading Screen ---
+            const loadingScreen = document.getElementById('loadingScreen');
+            if (loadingScreen) {
+                setTimeout(() => {
+                    loadingScreen.classList.add('hidden');
+                }, 1500); // Faster loading screen
+            }
+
+            // --- Header Scroll Effect (Removed) ---
+            /*
+            const header = document.getElementById('header');
+            const scrollThreshold = 50; 
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > scrollThreshold) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+            */
+
+            // --- Mobile Navigation ---
+            const burger = document.getElementById('burger');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+
+            if (burger && mobileMenu) {
+                burger.addEventListener('click', () => {
+                    burger.classList.toggle('active');
+                    mobileMenu.classList.toggle('active');
+                    document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+                });
+
+                mobileNavLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                         burger.classList.remove('active');
+                         mobileMenu.classList.remove('active');
+                         document.body.style.overflow = '';
+                    });
+                });
+            }
+
+            // --- Scroll-to-Top Button ---
+            const scrollTopBtn = document.getElementById('scrollTop');
+            const scrollShowThreshold = 300; 
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > scrollShowThreshold) {
+                    scrollTopBtn.classList.add('visible', 'opacity-100');
+                    scrollTopBtn.classList.remove('invisible', 'opacity-0');
+                } else {
+                    scrollTopBtn.classList.remove('visible', 'opacity-100');
+                    scrollTopBtn.classList.add('invisible', 'opacity-0');
+                }
+            });
+            scrollTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // --- Dynamic Year in Footer ---
+            const yearSpan = document.getElementById('currentYear');
+            if (yearSpan) {
+                yearSpan.textContent = new Date().getFullYear();
+            }
+
+            // --- Intersection Observer for Fade-in Animations ---
+            const fadeElements = document.querySelectorAll('.fade-in-element');
+            const observerOptions = {
+                root: null, 
+                rootMargin: '0px',
+                threshold: 0.1 
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                         observer.unobserve(entry.target); // Unobserve after it's visible for performance
+                    }
+                });
+            }, observerOptions);
+
+            fadeElements.forEach(el => {
+                observer.observe(el);
+            });
+
+             // --- Dynamic Greeting ---
+            const greetingElement = document.getElementById('dynamic-greeting');
+            if (greetingElement) {
+                const hour = new Date().getHours();
+                let greeting = 'Your Journey Begins Here';
+                if (hour < 12) {
+                    greeting = 'Good Morning! Start Your Day with an Adventure';
+                } else if (hour < 18) {
+                    greeting = 'Good Afternoon! Ready to Explore the World?';
+                } else {
+                    greeting = 'Good Evening! Dream Big, Travel Far';
+                }
+                greetingElement.textContent = greeting;
+            }
+
+            // --- Particle Background Effect (Updated Colors) ---
+            const canvas = document.getElementById('particle-canvas');
+            if (canvas) {
+                const ctx = canvas.getContext('2d');
+                let particles = [];
+                const particleCount = 50;
+
+                function resizeCanvas() {
+                    canvas.width = window.innerWidth;
+                    canvas.height = window.innerHeight;
+                }
+                resizeCanvas();
+                window.addEventListener('resize', resizeCanvas);
+
+                class Particle {
+                    constructor() {
+                        this.x = Math.random() * canvas.width;
+                        this.y = Math.random() * canvas.height;
+                        this.size = Math.random() * 2 + 1;
+                        this.speedX = Math.random() * 0.5 - 0.25;
+                        this.speedY = Math.random() * 0.5 - 0.25;
+                        this.opacity = Math.random() * 0.5 + 0.2;
+                    }
+                    update() {
+                        this.x += this.speedX;
+                        this.y += this.speedY;
+                        if (this.size > 0.1) this.size -= 0.01;
+                        if (this.x < 0) this.x = canvas.width;
+                        if (this.x > canvas.width) this.x = 0;
+                        if (this.y < 0) this.y = canvas.height;
+                        if (this.y > canvas.height) this.y = 0;
+                    }
+                    draw() {
+                        // Use Mint/Gray for particles
+                        ctx.fillStyle = `rgba(152, 251, 152, ${this.opacity * 0.5})`; // Paler Mint
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                }
+
+                function initParticles() {
+                    particles = [];
+                    for (let i = 0; i < particleCount; i++) {
+                        particles.push(new Particle());
+                    }
+                }
+                initParticles();
+
+                function animateParticles() {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    particles.forEach(p => {
+                        p.update();
+                        p.draw();
+                    });
+                    requestAnimationFrame(animateParticles);
+                }
+                animateParticles();
+            }
+
+            // --- Konami Code Easter Egg ---
+            let konamiCode = [];
+            const konamiSequence = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+            document.addEventListener('keydown', (e) => {
+                konamiCode.push(e.key);
+                konamiCode = konamiCode.slice(-konamiSequence.length);
+                if (konamiCode.join(',') === konamiSequence.join(',')) {
+                    showFeedback('Konami code activated! ✨', true);
+                     document.body.style.transition = 'filter 0.5s ease';
+                     document.body.style.filter = 'hue-rotate(180deg)';
+                     setTimeout(() => { document.body.style.filter = ''; }, 2000);
+                }
+            });
+
+            // --- Form Submission Handling with Custom Modal ---
+            const contactForm = document.getElementById('contactForm');
+            const feedbackModal = document.getElementById('formFeedbackModal');
+            const feedbackMessage = document.getElementById('feedbackMessage');
+            const closeFeedbackModalBtn = document.getElementById('closeFeedbackModal');
+
+            function showFeedback(message, success = true) {
+                feedbackMessage.textContent = message;
+                feedbackModal.classList.add('visible');
+            }
+
+            if (contactForm && feedbackModal && closeFeedbackModalBtn) {
+                contactForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    // Simulating success:
+                    showFeedback('Thank you for your message! We\'ll be in touch soon.');
+                    contactForm.reset();
+                });
+
+                closeFeedbackModalBtn.addEventListener('click', () => {
+                    feedbackModal.classList.remove('visible');
+                });
+
+                feedbackModal.addEventListener('click', (e) => {
+                    if (e.target === feedbackModal) {
+                        feedbackModal.classList.remove('visible');
+                    }
+                });
+            }
+
+            // --- Console Welcome Message ---
+             console.log('%c☀️ SunShine Travel & Tour Service Ltd ✈️', 'color: #3EB489; font-size: 24px; font-weight: bold; text-shadow: 1px 1px 0 #D3D3D3;');
+             console.log('%cReady for your next adventure? Contact us!', 'color: #36454F; font-size: 14px;');
+
+        }); // End DOMContentLoaded
+    </script>
+</body>
+</html>
+
+
