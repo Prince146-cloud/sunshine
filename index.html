@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SunShine Travel & Tour Service Ltd - Kigali | Your Gateway to the World</title>
-    <meta name="description" content="Premier travel agency in Kigali, Rwanda offering visa assistance, hotel reservations, customized tours, and travel insurance.">
-    <meta name="keywords" content="Rwanda travel agency, Kigali travel, visa assistance Rwanda, hotels Kigali, tours Rwanda, travel insurance, SunShine Travel Kigali">
+    <meta name="description" content="Premier travel agency in Kigali, Rwanda offering visa assistance, hotel reservations, customized tours, ticketing and travel insurance.">
+    <meta name="keywords" content="Rwanda travel agency, Kigali travel, visa assistance Rwanda, hotels Kigali, tours Rwanda, travel insurance, airline ticketing, SunShine Travel Kigali">
     <meta name="author" content="SunShine Travel & Tour Service Ltd">
     
     <!-- Favicon -->
@@ -135,11 +135,11 @@
             max-height: 500px;
         }
 
-        /* Live Chat Styles */
+        /* --- MODIFIED: Live Chat Styles --- */
         .chat-widget {
             position: fixed;
-            bottom: 100px;
-            right: 20px;
+            bottom: 24px; /* Changed from 100px */
+            left: 24px;  /* Changed from right: 20px */
             z-index: 1000;
             transition: all 0.3s ease;
         }
@@ -171,7 +171,18 @@
             flex-direction: column;
             position: absolute;
             bottom: 70px;
-            right: 0;
+            left: 0; /* Changed from right: 0 */
+        }
+
+        /* --- ADDED: Responsive Chat Box --- */
+        @media (max-width: 640px) {
+            .chat-box {
+                width: 90vw;
+                max-width: 380px;
+                left: 0;
+                right: auto;
+                bottom: 90px; /* Position above the bubble */
+            }
         }
 
         .chat-box.active {
@@ -357,8 +368,8 @@
     </div>
 
     <!-- Hero Section -->
-    <section id="home" class="relative min-h-screen flex items-center justify-center animated-bg pt-20">
-        <div class="absolute inset-0 bg-black opacity-40"></div>
+    <section id="home" class="relative min-h-screen flex items-center justify-center pt-20" style="background-image: url('https://www.wildernessdestinations.com/media/guebj5vt/wilderness-bisate-villas-rwanda-volcanoes-national-park.jpg?rmode=crop&height=809'); background-size: cover; background-position: center; background-attachment: fixed;">
+        <div class="absolute inset-0 animated-bg opacity-75"></div>
         
         <div class="relative z-10 container mx-auto px-6 text-center">
             <h1 class="text-5xl md:text-7xl font-bold text-white mb-6" data-aos="fade-up">
@@ -585,6 +596,25 @@
                         Corporate Solutions →
                     </a>
                 </div>
+
+                <!-- --- ADDED: Service Card 7: Ticketing --- -->
+                <div class="bg-white rounded-2xl p-8 card-hover shadow-lg" data-aos="fade-up" data-aos-delay="0">
+                    <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-ticket-alt text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">Airline Ticketing</h3>
+                    <p class="text-gray-600 mb-4">Book domestic and international flights with ease. We find the best fares for you.</p>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Global airline partners</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Best price matching</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Group booking discounts</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Last-minute bookings</li>
+                    </ul>
+                    <a href="#contact" class="mt-6 inline-block text-blue-500 font-semibold hover:underline">
+                        Book Flights →
+                    </a>
+                </div>
+
             </div>
         </div>
     </section>
@@ -627,9 +657,11 @@
                     </div>
                 </div>
 
+                <!-- --- MODIFIED: Dubai Image --- -->
                 <div class="relative group overflow-hidden rounded-2xl cursor-pointer" data-aos="zoom-in" data-aos-delay="200">
-                    <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=400&h=500&fit=crop" 
-                         alt="Dubai" class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500">
+                    <img src="https://www.freemontgroup.com/CMSPages/GetFile.aspx?guid=14ad1f0d-7d6a-45f6-9995-a68a05ba5e8a" 
+                         alt="Dubai" class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500"
+                         onerror="this.src='https://placehold.co/400x500/cccccc/666666?text=Image+Not+Found'">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
                     <div class="absolute bottom-0 left-0 p-6 text-white">
                         <h3 class="text-2xl font-bold mb-2">Dubai</h3>
@@ -640,9 +672,11 @@
                     </div>
                 </div>
 
+                <!-- --- MODIFIED: Zanzibar Image --- -->
                 <div class="relative group overflow-hidden rounded-2xl cursor-pointer" data-aos="zoom-in" data-aos-delay="300">
-                    <img src="https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=400&h=500&fit=crop" 
-                         alt="Zanzibar" class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500">
+                    <img src="https://www.safariventures.com/wp-content/uploads/z23.jpg" 
+                         alt="Zanzibar" class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500"
+                         onerror="this.src='https://placehold.co/400x500/cccccc/666666?text=Image+Not+Found'">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
                     <div class="absolute bottom-0 left-0 p-6 text-white">
                         <h3 class="text-2xl font-bold mb-2">Zanzibar</h3>
@@ -799,7 +833,7 @@
                         <p class="text-gray-600">
                             You can book our services by calling us at +250 783867795, emailing Sunstravel@yahoo.com, 
                             or visiting our office at KG 9 Ave, Kigali. You can also fill out our contact form below.
-                        </p>
+                        </d>
                     </div>
                 </div>
 
@@ -977,6 +1011,7 @@
                             <label class="block text-sm font-medium text-gray-700 mb-2">Service Interest</label>
                             <select class="custom-input w-full">
                                 <option>Select a service</option>
+                                <option>Airline Ticketing</option> <!-- ADDED -->
                                 <option>Visa Assistance</option>
                                 <option>Hotel Reservation</option>
                                 <option>Tour Package</option>
@@ -1028,6 +1063,7 @@
                 <div>
                     <h4 class="font-semibold mb-4">Our Services</h4>
                     <ul class="space-y-2 text-gray-400">
+                        <li><a href="#contact" class="hover:text-white transition">Airline Ticketing</a></li>
                         <li><a href="#contact" class="hover:text-white transition">Visa Assistance</a></li>
                         <li><a href="#contact" class="hover:text-white transition">Hotel Reservation</a></li>
                         <li><a href="#contact" class="hover:text-white transition">Tour Packages</a></li>
@@ -1049,6 +1085,9 @@
             <div class="border-t border-gray-800 pt-8 text-center">
                 <p class="text-gray-400 text-sm">
                     © 2024 SunShine Travel & Tour Service Ltd. All rights reserved.
+                </p>
+                <p class="text-gray-400 text-sm mt-2">
+                    Built with love by <a href="https://www.google.com/maps/place/Ibrix+digital/@-2.0277162,29.7372795,11z/data=!3m1!4b1!4m6!3m5!1s0x413a4a6c98e3ffcd:0xb8ed035ed12fc2d4!8m2!3d-2.0277246!4d29.9024309!16s%2Fg%2F11xnbnj800?entry=ttu&g_ep=EgoyMDI1MTAyMC4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer" class="hover:text-white underline">ibrix digital</a>
                 </p>
             </div>
         </div>
@@ -1093,10 +1132,24 @@
         <i class="fab fa-whatsapp text-white text-2xl"></i>
     </a>
 
-    <!-- Scroll to Top Button -->
-    <button id="scrollTop" class="fixed bottom-6 left-6 w-12 h-12 bg-[var(--color-primary)] text-white rounded-full shadow-lg opacity-0 invisible transition-all hover:scale-110 z-40">
+    <!-- --- MODIFIED: Scroll to Top Button --- -->
+    <button id="scrollTop" class="fixed bottom-24 left-6 w-12 h-12 bg-[var(--color-primary)] text-white rounded-full shadow-lg opacity-0 invisible transition-all hover:scale-110 z-40">
         <i class="fas fa-arrow-up"></i>
     </button>
+
+    <!-- --- ADDED: Form Success Modal --- -->
+    <div id="formSuccessModal" class="fixed inset-0 z-[70] bg-black/50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-xl p-8 max-w-sm w-full text-center" data-aos="zoom-in">
+            <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-check text-3xl"></i>
+            </div>
+            <h3 class="text-2xl font-bold mb-4">Message Sent!</h3>
+            <p class="text-gray-600 mb-6">Thank you for your message! We will contact you within 24 hours.</p>
+            <button id="closeModalBtn" class="bg-[var(--color-primary)] text-white px-6 py-2.5 rounded-full font-semibold hover:shadow-lg transition-all">
+                Close
+            </button>
+        </div>
+    </div>
 
     <!-- Scripts -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
@@ -1264,12 +1317,35 @@
             });
         });
 
-        // Form Submission
-        document.getElementById('contactForm').addEventListener('submit', (e) => {
+        // --- MODIFIED: Form Submission with Modal ---
+        const contactForm = document.getElementById('contactForm');
+        const formModal = document.getElementById('formSuccessModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+
+        contactForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            alert('Thank you for your message! We will contact you within 24 hours.');
+            // Show the modal
+            formModal.classList.remove('hidden');
+            formModal.classList.add('flex'); // Make it visible
+            // Reset the form
             e.target.reset();
+        });
+
+        function closeModal() {
+            formModal.classList.add('hidden');
+            formModal.classList.remove('flex'); // Hide it
+        }
+
+        // Close modal listeners
+        closeModalBtn.addEventListener('click', closeModal);
+        formModal.addEventListener('click', (e) => {
+            if (e.target === formModal) {
+                closeModal();
+            }
         });
     </script>
 </body>
 </html>
+
+
+
