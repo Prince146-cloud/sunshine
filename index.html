@@ -489,6 +489,24 @@
             </div>
 
             <div class="grid md:grid-cols-3 gap-8">
+                <!-- --- MOVED: Service Card 7: Ticketing --- -->
+                <div class="bg-white rounded-2xl p-8 card-hover shadow-lg" data-aos="fade-up" data-aos-delay="0">
+                    <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-ticket-alt text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">Airline Ticketing</h3>
+                    <p class="text-gray-600 mb-4">Book domestic and international flights with ease. We find the best fares for you.</p>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Global airline partners</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Best price matching</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Group booking discounts</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Last-minute bookings</li>
+                    </ul>
+                    <a href="#contact" class="mt-6 inline-block text-blue-500 font-semibold hover:underline">
+                        Book Flights →
+                    </a>
+                </div>
+                
                 <!-- Service Card 1 -->
                 <div class="bg-white rounded-2xl p-8 card-hover shadow-lg" data-aos="fade-up">
                     <div class="w-16 h-16 bg-gradient-to-br from-[var(--color-secondary)] to-blue-400 rounded-2xl flex items-center justify-center mb-6">
@@ -594,24 +612,6 @@
                     </ul>
                     <a href="#contact" class="mt-6 inline-block text-[var(--color-primary)] font-semibold hover:underline">
                         Corporate Solutions →
-                    </a>
-                </div>
-
-                <!-- --- ADDED: Service Card 7: Ticketing --- -->
-                <div class="bg-white rounded-2xl p-8 card-hover shadow-lg" data-aos="fade-up" data-aos-delay="0">
-                    <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-2xl flex items-center justify-center mb-6">
-                        <i class="fas fa-ticket-alt text-white text-2xl"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold mb-3">Airline Ticketing</h3>
-                    <p class="text-gray-600 mb-4">Book domestic and international flights with ease. We find the best fares for you.</p>
-                    <ul class="space-y-2 text-sm text-gray-600">
-                        <li><i class="fas fa-check text-green-500 mr-2"></i>Global airline partners</li>
-                        <li><i class="fas fa-check text-green-500 mr-2"></i>Best price matching</li>
-                        <li><i class="fas fa-check text-green-500 mr-2"></i>Group booking discounts</li>
-                        <li><i class="fas fa-check text-green-500 mr-2"></i>Last-minute bookings</li>
-                    </ul>
-                    <a href="#contact" class="mt-6 inline-block text-blue-500 font-semibold hover:underline">
-                        Book Flights →
                     </a>
                 </div>
 
@@ -936,8 +936,9 @@
                             </div>
                             <div>
                                 <h4 class="font-semibold mb-1">Visit Our Office</h4>
-                                <p class="text-gray-600">KG 9 Ave, Kigali, Rwanda</p>
-                                <p class="text-sm text-gray-500">Monday-Friday: 8AM-6PM, Saturday: 9AM-4PM</p>
+                                <p class="text-gray-600">Kigali, Nyarugenge</p>
+                                <!-- --- MODIFIED: Office Hours --- -->
+                                <p class="text-sm text-gray-500">Monday-Saturday: 9AM-6:30PM</p>
                             </div>
                         </div>
 
@@ -1077,7 +1078,7 @@
                     <ul class="space-y-2 text-gray-400">
                         <li><i class="fas fa-phone mr-2"></i>+250 783 867 795</li>
                         <li><i class="fas fa-envelope mr-2"></i>Sunstravel@yahoo.com</li>
-                        <li><i class="fas fa-map-marker-alt mr-2"></i>KG 9 Ave, Kigali</li>
+                        <li><i class="fas fa-map-marker-alt mr-2"></i>Kigali, Nyarugenge</li>
                     </ul>
                 </div>
             </div>
@@ -1275,8 +1276,9 @@
                     case 'How do I book a trip?':
                         response = 'You can book by calling +250 783867795, emailing Sunstravel@yahoo.com, or filling out our contact form. We\'ll help you plan your perfect trip!';
                         break;
+                    // --- MODIFIED: Office Hours Response ---
                     case 'What are your office hours?':
-                        response = 'Our office at KG 9 Ave, Kigali is open Monday-Friday: 8AM-6PM and Saturday: 9AM-4PM. For emergencies, call our 24/7 hotline.';
+                        response = 'Our office in Kigali, Nyarugenge is open Monday-Saturday: 9AM-6:30PM. For emergencies, call our 24/7 hotline.';
                         break;
                     case 'Do you offer visa assistance?':
                         response = 'Yes! We provide complete visa assistance including document preparation, application tracking, and embassy coordination for all major destinations.';
@@ -1346,6 +1348,4 @@
     </script>
 </body>
 </html>
-
-
 
