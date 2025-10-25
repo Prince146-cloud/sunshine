@@ -552,26 +552,27 @@
         </section>
 
         <!-- Stats Section -->
-        <section id="stats" class="page-section py-16 bg-white">
-            <div class="container mx-auto px-6">
+        <section id="stats" class="page-section py-20 relative text-white" style="background-image: url('https://live.staticflickr.com/65535/50675316648_71beb62ee8_h.jpg'); background-size: cover; background-position: center; background-attachment: fixed;">
+            <div class="absolute inset-0 bg-black/60"></div> <!-- Added overlay -->
+            <div class="container mx-auto px-6 relative z-10"> <!-- Added relative z-10 -->
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-                    <!-- MODIFIED: Stat updated -->
+                    <!-- MODIFIED: Text color changed to white/accent -->
                     <div data-aos="fade-up">
-                        <h3 class="text-4xl font-bold text-[var(--color-primary)]">16,000+</h3>
-                        <p class="text-gray-600 mt-2">Happy Travelers</p>
+                        <h3 class="text-4xl font-bold text-[var(--color-accent)]">16,000+</h3>
+                        <p class="text-gray-200 mt-2">Happy Travelers</p>
                     </div>
                     <div data-aos="fade-up" data-aos-delay="100">
-                        <h3 class="text-4xl font-bold text-[var(--color-secondary)]">250+</h3>
-                        <p class="text-gray-600 mt-2">Destinations</p>
+                        <h3 class="text-4xl font-bold text-[var(--color-accent)]">250+</h3>
+                        <p class="text-gray-200 mt-2">Destinations</p>
                     </div>
                     <div data-aos="fade-up" data-aos-delay="200">
                         <h3 class="text-4xl font-bold text-[var(--color-accent)]">98%</h3>
-                        <p class="text-gray-600 mt-2">Satisfaction Rate</p>
+                        <p class="text-gray-200 mt-2">Satisfaction Rate</p>
                     </div>
-                    <!-- MODIFIED: Stat updated -->
+                    <!-- MODIFIED: Text color changed to white/accent -->
                     <div data-aos="fade-up" data-aos-delay="300">
-                        <h3 class="text-4xl font-bold text-[var(--color-success)]">15+</h3>
-                        <p class="text-gray-600 mt-2">Years Experience</p>
+                        <h3 class="text-4xl font-bold text-[var(--color-accent)]">15+</h3>
+                        <p class="text-gray-200 mt-2">Years Experience</p>
                     </div>
                 </div>
             </div>
@@ -2356,3 +2357,5 @@
     </script>
 </body>
 </html>
+
+
