@@ -24,6 +24,12 @@
     
     <!-- AOS Animation Library -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Quill.js Rich Text Editor -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+
+    <!-- Supabase JS Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
         :root {
@@ -123,6 +129,47 @@
             border-color: var(--color-primary);
             box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
         }
+        
+        /* Custom File Input */
+        .custom-file-input::-webkit-file-upload-button {
+            visibility: hidden;
+        }
+        .custom-file-input::before {
+            content: 'Select image';
+            display: inline-block;
+            background: linear-gradient(top, #f9f9f9, #e3e3e3);
+            border: 1px solid #999;
+            border-radius: 8px;
+            padding: 8px 12px;
+            outline: none;
+            white-space: nowrap;
+            -webkit-user-select: none;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 10pt;
+            margin-right: 10px;
+        }
+        .custom-file-input:hover::before {
+            border-color: black;
+        }
+        .custom-file-input:active::before {
+            background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
+        }
+        
+        /* Quill Editor Height */
+        #editor-container {
+            height: 300px;
+            background-color: white;
+            border-radius: 10px;
+        }
+        .ql-toolbar.ql-snow {
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+        .ql-container.ql-snow {
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
 
         /* FAQ Accordion */
         .accordion-content {
@@ -135,11 +182,11 @@
             max-height: 500px;
         }
 
-        /* --- MODIFIED: Live Chat Styles --- */
+        /* Live Chat Styles */
         .chat-widget {
             position: fixed;
-            bottom: 24px; /* Changed from 100px */
-            left: 24px;  /* Changed from right: 20px */
+            bottom: 24px;
+            left: 24px;
             z-index: 1000;
             transition: all 0.3s ease;
         }
@@ -171,17 +218,16 @@
             flex-direction: column;
             position: absolute;
             bottom: 70px;
-            left: 0; /* Changed from right: 0 */
+            left: 0;
         }
 
-        /* --- ADDED: Responsive Chat Box --- */
         @media (max-width: 640px) {
             .chat-box {
                 width: 90vw;
                 max-width: 380px;
                 left: 0;
                 right: auto;
-                bottom: 90px; /* Position above the bubble */
+                bottom: 90px;
             }
         }
 
@@ -308,6 +354,85 @@
                 transform: translateY(-10px);
             }
         }
+        
+        /* Page Section Styling */
+        .page-section {
+            padding-top: 100px; /* Offset for header */
+            min-height: 80vh;
+        }
+        
+        /* Simple Loader */
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--color-primary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 40px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Blog Post Content Styling */
+        .prose {
+            color: var(--color-text);
+        }
+        /* Style HTML content coming from the rich text editor */
+        .prose h1, .prose h2, .prose h3 {
+            color: var(--color-dark);
+            font-family: 'Playfair Display', serif;
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+        }
+        .prose p {
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+        .prose a {
+            color: var(--color-primary);
+            text-decoration: underline;
+        }
+        .prose img {
+            border-radius: 12px;
+            margin: 2rem auto;
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+        .prose ul, .prose ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .prose li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* NEW: Comment Section Styling */
+        .comment {
+            background: #f9f9f9;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            border: 1px solid #e0e0e0;
+        }
+        .comment-author {
+            font-weight: bold;
+            color: var(--color-dark);
+            margin-bottom: 4px;
+        }
+        .comment-date {
+            font-size: 0.8rem;
+            color: #777;
+            margin-bottom: 8px;
+        }
+        .comment-content {
+            color: var(--color-text);
+        }
+
     </style>
 </head>
 <body>
@@ -316,11 +441,14 @@
     <header id="header" class="fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-white/95 backdrop-blur">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
             <div class="flex items-center space-x-3">
-                <img src="https://i.imgur.com/W7PgYCj.jpeg" alt="Logo" class="h-12 w-12 rounded-lg">
-                <div>
-                    <h3 class="font-bold text-lg text-[var(--color-dark)]">SunShine Travel</h3>
-                    <p class="text-xs text-[var(--color-text)]">Your Gateway to the World</p>
-                </div>
+                <a href="#home" class="flex items-center space-x-3">
+                    <!-- MODIFIED: Logo updated -->
+                    <img src="https://i.imgur.com/W7PgYCj_d.jpeg?maxwidth=520&shape=thumb&fidelity=high" alt="Logo" class="h-12 w-12 rounded-lg object-cover" onerror="this.src='https://placehold.co/48x48/cccccc/666666?text=Logo'">
+                    <div>
+                        <h3 class="font-bold text-lg text-[var(--color-dark)]">SunShine Travel</h3>
+                        <p class="text-xs text-[var(--color-text)]">Your Gateway to the World</p>
+                    </div>
+                </a>
             </div>
 
             <!-- Desktop Navigation -->
@@ -329,11 +457,15 @@
                 <a href="#services" class="nav-link text-[var(--color-dark)] hover:text-[var(--color-primary)] transition">Services</a>
                 <a href="#destinations" class="nav-link text-[var(--color-dark)] hover:text-[var(--color-primary)] transition">Destinations</a>
                 <a href="#about" class="nav-link text-[var(--color-dark)] hover:text-[var(--color-primary)] transition">About</a>
+                <!-- ADDED BLOG LINK -->
+                <a href="#blog" class="nav-link text-[var(--color-dark)] hover:text-[var(--color-primary)] transition">Blog</a>
                 <a href="#contact" class="nav-link text-[var(--color-dark)] hover:text-[var(--color-primary)] transition">Contact</a>
                 
                 <a href="#contact" class="bg-[var(--color-primary)] text-white px-6 py-2.5 rounded-full font-semibold hover:shadow-lg transition-all duration-300">
                     Book Now
                 </a>
+                <!-- MODIFIED: "Admin" text changed -->
+                <a id="admin-nav-link" href="#admin-login" class="nav-link text-sm text-gray-500 hover:text-[var(--color-primary)] transition hidden">Login</a>
             </div>
 
             <!-- Mobile Menu Button -->
@@ -358,682 +490,850 @@
                     <a href="#services" class="block py-2 text-[var(--color-dark)] hover:text-[var(--color-primary)]">Services</a>
                     <a href="#destinations" class="block py-2 text-[var(--color-dark)] hover:text-[var(--color-primary)]">Destinations</a>
                     <a href="#about" class="block py-2 text-[var(--color-dark)] hover:text-[var(--color-primary)]">About</a>
+                    <!-- ADDED BLOG LINK -->
+                    <a href="#blog" class="block py-2 text-[var(--color-dark)] hover:text-[var(--color-primary)]">Blog</a>
                     <a href="#contact" class="block py-2 text-[var(--color-dark)] hover:text-[var(--color-primary)]">Contact</a>
                     <a href="#contact" class="w-full bg-[var(--color-primary)] text-white py-3 rounded-full font-semibold mt-6 block text-center">
                         Book Now
                     </a>
+                    <!-- MODIFIED: "Admin Login" text changed -->
+                    <a id="admin-mobile-link" href="#admin-login" class="block py-2 text-sm text-gray-500 hover:text-[var(--color-primary)] hidden">Login</a>
                 </nav>
             </div>
         </div>
     </div>
+    
+    <!-- This main tag will wrap all existing content sections -->
+    <main id="main-content">
+        <!-- Hero Section -->
+        <section id="home" class="page-section relative min-h-screen flex items-center justify-center pt-20" style="background-image: url('https://www.wildernessdestinations.com/media/guebj5vt/wilderness-bisate-villas-rwanda-volcanoes-national-park.jpg?rmode=crop&height=809'); background-size: cover; background-position: center; background-attachment: fixed;">
+            <div class="absolute inset-0 animated-bg opacity-75"></div>
+            
+            <div class="relative z-10 container mx-auto px-6 text-center">
+                <h1 class="text-5xl md:text-7xl font-bold text-white mb-6" data-aos="fade-up">
+                    Discover Your Next <span class="text-[var(--color-accent)]">Adventure</span>
+                </h1>
+                <p class="text-xl text-white mb-12 max-w-3xl mx-auto" data-aos="fade-up" data-aos-delay="100">
+                    Experience seamless travel planning from Kigali to destinations worldwide. We handle visa assistance, hotel bookings, tour packages, and travel insurance with expertise and care.
+                </p>
 
-    <!-- Hero Section -->
-    <section id="home" class="relative min-h-screen flex items-center justify-center pt-20" style="background-image: url('https://www.wildernessdestinations.com/media/guebj5vt/wilderness-bisate-villas-rwanda-volcanoes-national-park.jpg?rmode=crop&height=809'); background-size: cover; background-position: center; background-attachment: fixed;">
-        <div class="absolute inset-0 animated-bg opacity-75"></div>
-        
-        <div class="relative z-10 container mx-auto px-6 text-center">
-            <h1 class="text-5xl md:text-7xl font-bold text-white mb-6" data-aos="fade-up">
-                Discover Your Next <span class="text-[var(--color-accent)]">Adventure</span>
-            </h1>
-            <p class="text-xl text-white mb-12 max-w-3xl mx-auto" data-aos="fade-up" data-aos-delay="100">
-                Experience seamless travel planning from Kigali to destinations worldwide. We handle visa assistance, hotel bookings, tour packages, and travel insurance with expertise and care.
-            </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center" data-aos="fade-up" data-aos-delay="200">
+                    <a href="#contact" class="bg-white text-[var(--color-primary)] px-8 py-4 rounded-full font-semibold hover:shadow-lg transition-all inline-block">
+                        Start Your Journey
+                    </a>
+                    <a href="#services" class="border-2 border-white text-white px-8 py-4 rounded-full font-semibold hover:bg-white hover:text-[var(--color-primary)] transition-all inline-block">
+                        Explore Services
+                    </a>
+                </div>
 
-            <div class="flex flex-col sm:flex-row gap-4 justify-center" data-aos="fade-up" data-aos-delay="200">
-                <a href="#contact" class="bg-white text-[var(--color-primary)] px-8 py-4 rounded-full font-semibold hover:shadow-lg transition-all inline-block">
-                    Start Your Journey
-                </a>
-                <a href="#services" class="border-2 border-white text-white px-8 py-4 rounded-full font-semibold hover:bg-white hover:text-[var(--color-primary)] transition-all inline-block">
-                    Explore Services
-                </a>
-            </div>
-
-            <!-- Trust Indicators -->
-            <div class="flex justify-center items-center space-x-8 mt-12" data-aos="fade-up" data-aos-delay="300">
-                <div class="text-white">
-                    <i class="fas fa-shield-alt text-2xl mb-2"></i>
-                    <p class="text-sm">Licensed & Insured</p>
-                </div>
-                <div class="text-white">
-                    <i class="fas fa-headset text-2xl mb-2"></i>
-                    <p class="text-sm">24/7 Support</p>
-                </div>
-                <div class="text-white">
-                    <i class="fas fa-award text-2xl mb-2"></i>
-                    <p class="text-sm">12+ Years Experience</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Stats Section -->
-    <section class="py-16 bg-white">
-        <div class="container mx-auto px-6">
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-                <div data-aos="fade-up">
-                    <h3 class="text-4xl font-bold text-[var(--color-primary)]">15,000+</h3>
-                    <p class="text-gray-600 mt-2">Happy Travelers</p>
-                </div>
-                <div data-aos="fade-up" data-aos-delay="100">
-                    <h3 class="text-4xl font-bold text-[var(--color-secondary)]">250+</h3>
-                    <p class="text-gray-600 mt-2">Destinations</p>
-                </div>
-                <div data-aos="fade-up" data-aos-delay="200">
-                    <h3 class="text-4xl font-bold text-[var(--color-accent)]">98%</h3>
-                    <p class="text-gray-600 mt-2">Satisfaction Rate</p>
-                </div>
-                <div data-aos="fade-up" data-aos-delay="300">
-                    <h3 class="text-4xl font-bold text-[var(--color-success)]">12+</h3>
-                    <p class="text-gray-600 mt-2">Years Experience</p>
+                <!-- Trust Indicators -->
+                <div class="flex justify-center items-center space-x-8 mt-12" data-aos="fade-up" data-aos-delay="300">
+                    <div class="text-white">
+                        <i class="fas fa-shield-alt text-2xl mb-2"></i>
+                        <p class="text-sm">Licensed & Insured</p>
+                    </div>
+                    <div class="text-white">
+                        <i class="fas fa-headset text-2xl mb-2"></i>
+                        <p class="text-sm">24/7 Support</p>
+                    </div>
+                    <!-- MODIFIED: Stat updated -->
+                    <div class="text-white">
+                        <i class="fas fa-award text-2xl mb-2"></i>
+                        <p class="text-sm">Since 2009</p>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- About Section -->
-    <section id="about" class="py-20 bg-[var(--color-gray)]">
-        <div class="container mx-auto px-6">
-            <div class="grid md:grid-cols-2 gap-12 items-center">
-                <div data-aos="fade-right">
-                    <h2 class="text-4xl md:text-5xl font-bold mb-6">Why Choose SunShine Travel?</h2>
-                    <p class="text-gray-600 mb-6">
-                        With over 12 years of excellence in travel services, SunShine Travel & Tour Service Ltd has been the trusted partner for thousands of travelers from Rwanda and beyond. Our commitment to quality, reliability, and personalized service sets us apart.
+        <!-- Stats Section -->
+        <section id="stats" class="page-section py-16 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                    <!-- MODIFIED: Stat updated -->
+                    <div data-aos="fade-up">
+                        <h3 class="text-4xl font-bold text-[var(--color-primary)]">16,000+</h3>
+                        <p class="text-gray-600 mt-2">Happy Travelers</p>
+                    </div>
+                    <div data-aos="fade-up" data-aos-delay="100">
+                        <h3 class="text-4xl font-bold text-[var(--color-secondary)]">250+</h3>
+                        <p class="text-gray-600 mt-2">Destinations</p>
+                    </div>
+                    <div data-aos="fade-up" data-aos-delay="200">
+                        <h3 class="text-4xl font-bold text-[var(--color-accent)]">98%</h3>
+                        <p class="text-gray-600 mt-2">Satisfaction Rate</p>
+                    </div>
+                    <!-- MODIFIED: Stat updated -->
+                    <div data-aos="fade-up" data-aos-delay="300">
+                        <h3 class="text-4xl font-bold text-[var(--color-success)]">15+</h3>
+                        <p class="text-gray-600 mt-2">Years Experience</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="page-section py-20 bg-[var(--color-gray)]">
+            <div class="container mx-auto px-6">
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div data-aos="fade-right">
+                        <h2 class="text-4xl md:text-5xl font-bold mb-6">Why Choose SunShine Travel?</h2>
+                        <!-- MODIFIED: Text updated -->
+                        <p class="text-gray-600 mb-6">
+                            With over 15 years of excellence in travel services, SunShine Travel & Tour Service Ltd has been the trusted partner for thousands of travelers from Rwanda and beyond. Our commitment to quality, reliability, and personalized service sets us apart.
+                        </p>
+                        <div class="space-y-4">
+                            <div class="flex items-start space-x-3">
+                                <i class="fas fa-check-circle text-[var(--color-success)] text-xl mt-1"></i>
+                                <div>
+                                    <h4 class="font-semibold mb-1">Government Licensed & Certified</h4>
+                                    <p class="text-gray-600 text-sm">Fully licensed by Rwanda Development Board and member of Rwanda Tours and Travel Association</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-3">
+                                <i class="fas fa-check-circle text-[var(--color-success)] text-xl mt-1"></i>
+                                <div>
+                                    <h4 class="font-semibold mb-1">Expert Local Knowledge</h4>
+                                    <p class="text-gray-600 text-sm">Our team knows Rwanda and East Africa inside out, ensuring authentic experiences</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-3">
+                                <i class="fas fa-check-circle text-[var(--color-success)] text-xl mt-1"></i>
+                                <div>
+                                    <h4 class="font-semibold mb-1">Personalized Service</h4>
+                                    <p class="text-gray-600 text-sm">Every trip is tailored to your preferences, budget, and travel style</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-3">
+                                <i class="fas fa-check-circle text-[var(--color-success)] text-xl mt-1"></i>
+                                <div>
+                                    <h4 class="font-semibold mb-1">24/7 Emergency Support</h4>
+                                    <p class="text-gray-600 text-sm">Round-the-clock assistance for peace of mind during your travels</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div data-aos="fade-left">
+                        <!-- MODIFIED: Image source updated -->
+                        <img src="https://newhorizonafricasafaris.com/wp-content/uploads/2021/07/2-Days-Kigali-City-Safari-%E2%80%93-Fun-Educative.jpg" 
+                             alt="Kigali City Safari" class="rounded-2xl shadow-xl w-full h-full object-cover"
+                             onerror="this.src='https://placehold.co/600x600/cccccc/666666?text=Image+Error'">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Grid -->
+        <section id="services" class="page-section py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4" data-aos="fade-up">Our Premium Services</h2>
+                    <p class="text-gray-600 max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="100">
+                        Comprehensive travel solutions tailored to your needs
                     </p>
-                    <div class="space-y-4">
-                        <div class="flex items-start space-x-3">
-                            <i class="fas fa-check-circle text-[var(--color-success)] text-xl mt-1"></i>
-                            <div>
-                                <h4 class="font-semibold mb-1">Government Licensed & Certified</h4>
-                                <p class="text-gray-600 text-sm">Fully licensed by Rwanda Development Board and member of Rwanda Tours and Travel Association</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start space-x-3">
-                            <i class="fas fa-check-circle text-[var(--color-success)] text-xl mt-1"></i>
-                            <div>
-                                <h4 class="font-semibold mb-1">Expert Local Knowledge</h4>
-                                <p class="text-gray-600 text-sm">Our team knows Rwanda and East Africa inside out, ensuring authentic experiences</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start space-x-3">
-                            <i class="fas fa-check-circle text-[var(--color-success)] text-xl mt-1"></i>
-                            <div>
-                                <h4 class="font-semibold mb-1">Personalized Service</h4>
-                                <p class="text-gray-600 text-sm">Every trip is tailored to your preferences, budget, and travel style</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start space-x-3">
-                            <i class="fas fa-check-circle text-[var(--color-success)] text-xl mt-1"></i>
-                            <div>
-                                <h4 class="font-semibold mb-1">24/7 Emergency Support</h4>
-                                <p class="text-gray-600 text-sm">Round-the-clock assistance for peace of mind during your travels</p>
-                            </div>
+                </div>
+
+                <!-- MODIFIED: Service cards updated with images, overlays, and bold text -->
+                <div class="grid md:grid-cols-3 gap-8">
+                    
+                    <!-- Service Card 1: Ticketing -->
+                    <div class="relative rounded-2xl p-8 card-hover shadow-lg flex flex-col justify-end min-h-[350px] bg-cover bg-center text-white" 
+                         style="background-image: url('https://amadeus.com/content/dam/amadeuswebevo/brand/amadeus/photos/sections/products/airlines/industry-page/overview-airlines.jpg/jcr:content/renditions/cq5dam.web.1024.768.jpeg');"
+                         data-aos="fade-up" data-aos-delay="0">
+                        <div class="absolute inset-0 bg-black/50 rounded-2xl"></div>
+                        <div class="relative z-10">
+                            <!-- MODIFIED: Added text-[var(--color-accent)] -->
+                            <h3 class="text-3xl font-bold mb-3 text-[var(--color-accent)] drop-shadow-md">Airline Ticketing</h3>
+                            <p class="mb-4 font-medium">Book domestic and international flights with ease. We find the best fares for you.</p>
+                            <a href="#contact" class="mt-6 inline-block text-white font-bold hover:underline">
+                                Book Flights →
+                            </a>
                         </div>
                     </div>
-                </div>
-                <div data-aos="fade-left">
-                    <img src="https://images.unsplash.com/photo-1528702748617-c64d49f918af?w=600&h=600&fit=crop" 
-                         alt="About Us" class="rounded-2xl shadow-xl w-full">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Services Grid -->
-    <section id="services" class="py-20 bg-white">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl md:text-5xl font-bold mb-4" data-aos="fade-up">Our Premium Services</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="100">
-                    Comprehensive travel solutions tailored to your needs
-                </p>
-            </div>
-
-            <div class="grid md:grid-cols-3 gap-8">
-                <!-- --- MOVED: Service Card 7: Ticketing --- -->
-                <div class="bg-white rounded-2xl p-8 card-hover shadow-lg" data-aos="fade-up" data-aos-delay="0">
-                    <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-2xl flex items-center justify-center mb-6">
-                        <i class="fas fa-ticket-alt text-white text-2xl"></i>
+                    
+                    <!-- Service Card 2: Visa Assistance -->
+                    <div class="relative rounded-2xl p-8 card-hover shadow-lg flex flex-col justify-end min-h-[350px] bg-cover bg-center text-white" 
+                         style="background-image: url('https://visaeta.uk/wp-content/cache/seraphinite-accelerator/s/m/d/img/d0cc5c79643088d42cfb192619fe7784.b26e6.png');"
+                         data-aos="fade-up" data-aos-delay="100">
+                        <div class="absolute inset-0 bg-black/50 rounded-2xl"></div>
+                        <div class="relative z-10">
+                            <!-- MODIFIED: Added text-[var(--color-accent)] -->
+                            <h3 class="text-3xl font-bold mb-3 text-[var(--color-accent)] drop-shadow-md">Visa Assistance</h3>
+                            <p class="mb-4 font-medium">Navigate visa requirements effortlessly with our expert guidance and documentation support.</p>
+                            <a href="#contact" class="mt-6 inline-block text-white font-bold hover:underline">
+                                Get Visa Help →
+                            </a>
+                        </div>
                     </div>
-                    <h3 class="text-2xl font-bold mb-3">Airline Ticketing</h3>
-                    <p class="text-gray-600 mb-4">Book domestic and international flights with ease. We find the best fares for you.</p>
-                    <ul class="space-y-2 text-sm text-gray-600">
-                        <li><i class="fas fa-check text-green-500 mr-2"></i>Global airline partners</li>
-                        <li><i class="fas fa-check text-green-500 mr-2"></i>Best price matching</li>
-                        <li><i class="fas fa-check text-green-500 mr-2"></i>Group booking discounts</li>
-                        <li><i class="fas fa-check text-green-500 mr-2"></i>Last-minute bookings</li>
-                    </ul>
-                    <a href="#contact" class="mt-6 inline-block text-blue-500 font-semibold hover:underline">
-                        Book Flights →
-                    </a>
-                </div>
-                
-                <!-- Service Card 1 -->
-                <div class="bg-white rounded-2xl p-8 card-hover shadow-lg" data-aos="fade-up">
-                    <div class="w-16 h-16 bg-gradient-to-br from-[var(--color-secondary)] to-blue-400 rounded-2xl flex items-center justify-center mb-6">
-                        <i class="fas fa-passport text-white text-2xl"></i>
+
+                    <!-- Service Card 3: Hotel Booking -->
+                    <div class="relative rounded-2xl p-8 card-hover shadow-lg flex flex-col justify-end min-h-[350px] bg-cover bg-center text-white" 
+                         style="background-image: url('https://play-lh.googleusercontent.com/Pmx1ZIGytYXCFbyAU4GPKwOyU3xvoAHj4cR53A-qW-whsA2wOGpLzUqliBlgVdOt-Q=w3840-h2160-rw');"
+                         data-aos="fade-up" data-aos-delay="200">
+                        <div class="absolute inset-0 bg-black/50 rounded-2xl"></div>
+                        <div class="relative z-10">
+                            <!-- MODIFIED: Added text-[var(--color-accent)] -->
+                            <h3 class="text-3xl font-bold mb-3 text-[var(--color-accent)] drop-shadow-md">Hotel Booking</h3>
+                            <p class="mb-4 font-medium">From luxury resorts to budget stays, find perfect accommodations worldwide.</p>
+                            <a href="#contact" class="mt-6 inline-block text-white font-bold hover:underline">
+                                Book Hotels →
+                            </a>
+                        </div>
                     </div>
-                    <h3 class="text-2xl font-bold mb-3">Visa Assistance</h3>
-                    <p class="text-gray-600 mb-4">Navigate visa requirements effortlessly with our expert guidance and documentation support.</p>
-                    <ul class="space-y-2 text-sm text-gray-600">
-                        <li><i class="fas fa-check text-green-500 mr-2"></i>Document preparation & review</li>
-                        <li><i class="fas fa-check text-green-500 mr-2"></i>Application tracking</li>
-                        <li><i class="fas fa-check text-green-500 mr-2"></i>Embassy coordination</li>
-                        <li><i class="fas fa-check text-green-500 mr-2"></i>Express processing available</li>
-                    </ul>
-                    <a href="#contact" class="mt-6 inline-block text-[var(--color-secondary)] font-semibold hover:underline">
-                        Get Visa Help →
-                    </a>
-                </div>
 
-                <!-- Service Card 2 -->
-                <div class="bg-white rounded-2xl p-8 card-hover shadow-lg" data-aos="fade-up" data-aos-delay="100">
-                    <div class="w-16 h-16 bg-gradient-to-br from-[var(--color-accent)] to-yellow-400 rounded-2xl flex items-center justify-center mb-6">
-                        <i class="fas fa-hotel text-white text-2xl"></i>
+                    <!-- Service Card 4: Tour Packages -->
+                    <div class="relative rounded-2xl p-8 card-hover shadow-lg flex flex-col justify-end min-h-[350px] bg-cover bg-center text-white" 
+                         style="background-image: url('https://www.legacyholidays.net/assets/img/about.jpg');"
+                         data-aos="fade-up" data-aos-delay="300">
+                        <div class="absolute inset-0 bg-black/50 rounded-2xl"></div>
+                        <div class="relative z-10">
+                            <!-- MODIFIED: Added text-[var(--color-accent)] -->
+                            <h3 class="text-3xl font-bold mb-3 text-[var(--color-accent)] drop-shadow-md">Tour Packages</h3>
+                            <p class="mb-4 font-medium">Curated experiences from gorilla trekking to city tours, tailored to your preferences.</p>
+                            <a href="#contact" class="mt-6 inline-block text-white font-bold hover:underline">
+                                Explore Tours →
+                            </a>
+                        </div>
                     </div>
-                    <h3 class="text-2xl font-bold mb-3">Hotel Booking</h3>
-                    <p class="text-gray-600 mb-4">From luxury resorts to budget stays, find perfect accommodations worldwide.</p>
-                    <ul class="space-y-2 text-sm text-gray-600">
-                        <li><i class="fas fa-check text-green-500 mr-2"></i>Verified properties</li>
-                        <li><i class="fas fa-check text-green-500 mr-2"></i>Best rate guarantee</li>
-                        <li><i class="fas fa-check text-green-500 mr-2"></i>Instant confirmation</li>
-                        <li><i class="fas fa-check text-green-500 mr-2"></i>Special corporate rates</li>
-                    </ul>
-                    <a href="#contact" class="mt-6 inline-block text-[var(--color-accent)] font-semibold hover:underline">
-                        Book Hotels →
-                    </a>
-                </div>
 
-                <!-- Service Card 3 -->
-                <div class="bg-white rounded-2xl p-8 card-hover shadow-lg" data-aos="fade-up" data-aos-delay="200">
-                    <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-400 rounded-2xl flex items-center justify-center mb-6">
-                        <i class="fas fa-map-marked-alt text-white text-2xl"></i>
+                    <!-- Service Card 5: Travel Insurance -->
+                    <div class="relative rounded-2xl p-8 card-hover shadow-lg flex flex-col justify-end min-h-[350px] bg-cover bg-center text-white" 
+                         style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-tzKdo16QggPeyhex4b0QlnAKyhTpQCktrBIcIR3SvZmg4LC4JLm1-bRnzUOWASNPnxE&usqp=CAU');"
+                         data-aos="fade-up" data-aos-delay="400">
+                        <div class="absolute inset-0 bg-black/50 rounded-2xl"></div>
+                        <div class="relative z-10">
+                            <!-- MODIFIED: Added text-[var(--color-accent)] -->
+                            <h3 class="text-3xl font-bold mb-3 text-[var(--color-accent)] drop-shadow-md">Travel Insurance</h3>
+                            <p class="mb-4 font-medium">Comprehensive coverage for medical emergencies, trip cancellations, and more.</p>
+                            <a href="#contact" class="mt-6 inline-block text-white font-bold hover:underline">
+                                Get Coverage →
+                            </a>
+                        </div>
                     </div>
-                    <h3 class="text-2xl font-bold mb-3">Tour Packages</h3>
-                    <p class="text-gray-600 mb-4">Curated experiences from gorilla trekking to city tours, tailored to your preferences.</p>
-                    <ul class="space-y-2 text-sm text-gray-600">
-                        <li><i class="fas fa-check text-green-500 mr-2"></i>Expert local guides</li>
-                        <li><i class="fas fa-check text-green-500 mr-2"></i>All-inclusive options</li>
-                        <li><i class="fas fa-check text-green-500 mr-2"></i>Customizable itineraries</li>
-                        <li><i class="fas fa-check text-green-500 mr-2"></i>Small group tours</li>
-                    </ul>
-                    <a href="#contact" class="mt-6 inline-block text-purple-500 font-semibold hover:underline">
-                        Explore Tours →
-                    </a>
-                </div>
 
-                <!-- Service Card 4 -->
-                <div class="bg-white rounded-2xl p-8 card-hover shadow-lg" data-aos="fade-up" data-aos-delay="300">
-                    <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-teal-400 rounded-2xl flex items-center justify-center mb-6">
-                        <i class="fas fa-shield-alt text-white text-2xl"></i>
+                    <!-- Service Card 6: Car Rental -->
+                    <div class="relative rounded-2xl p-8 card-hover shadow-lg flex flex-col justify-end min-h-[350px] bg-cover bg-center text-white" 
+                         style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVKsNWpn62Y6e33TDO3AHzd9UCzNFpXgG6AQ&s');"
+                         data-aos="fade-up" data-aos-delay="500">
+                        <div class="absolute inset-0 bg-black/50 rounded-2xl"></div>
+                        <div class="relative z-10">
+                            <!-- MODIFIED: Added text-[var(--color-accent)] -->
+                            <h3 class="text-3xl font-bold mb-3 text-[var(--color-accent)] drop-shadow-md">Car Rental</h3>
+                            <p class="mb-4 font-medium">Reliable vehicle rentals with drivers or self-drive options for your convenience.</p>
+                            <a href="#contact" class="mt-6 inline-block text-white font-bold hover:underline">
+                                Rent a Car →
+                            </a>
+                        </div>
                     </div>
-                    <h3 class="text-2xl font-bold mb-3">Travel Insurance</h3>
-                    <p class="text-gray-600 mb-4">Comprehensive coverage for medical emergencies, trip cancellations, and more.</p>
-                    <ul class="space-y-2 text-sm text-gray-600">
-                        <li><i class="fas fa-check text-green-500 mr-2"></i>Global coverage</li>
-                        <li><i class="fas fa-check text-green-500 mr-2"></i>24/7 assistance</li>
-                        <li><i class="fas fa-check text-green-500 mr-2"></i>Quick claims process</li>
-                        <li><i class="fas fa-check text-green-500 mr-2"></i>COVID-19 coverage</li>
-                    </ul>
-                    <a href="#contact" class="mt-6 inline-block text-green-500 font-semibold hover:underline">
-                        Get Coverage →
-                    </a>
-                </div>
-
-                <!-- Service Card 5 -->
-                <div class="bg-white rounded-2xl p-8 card-hover shadow-lg" data-aos="fade-up" data-aos-delay="400">
-                    <div class="w-16 h-16 bg-gradient-to-br from-red-500 to-orange-400 rounded-2xl flex items-center justify-center mb-6">
-                        <i class="fas fa-car text-white text-2xl"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold mb-3">Car Rental</h3>
-                    <p class="text-gray-600 mb-4">Reliable vehicle rentals with drivers or self-drive options for your convenience.</p>
-                    <ul class="space-y-2 text-sm text-gray-600">
-                        <li><i class="fas fa-check text-green-500 mr-2"></i>Wide vehicle selection</li>
-                        <li><i class="fas fa-check text-green-500 mr-2"></i>Professional drivers</li>
-                        <li><i class="fas fa-check text-green-500 mr-2"></i>Airport transfers</li>
-                        <li><i class="fas fa-check text-green-500 mr-2"></i>Long-term rates</li>
-                    </ul>
-                    <a href="#contact" class="mt-6 inline-block text-red-500 font-semibold hover:underline">
-                        Rent a Car →
-                    </a>
-                </div>
-
-                <!-- Service Card 6 -->
-                <div class="bg-white rounded-2xl p-8 card-hover shadow-lg" data-aos="fade-up" data-aos-delay="500">
-                    <div class="w-16 h-16 bg-gradient-to-br from-[var(--color-primary)] to-orange-400 rounded-2xl flex items-center justify-center mb-6">
-                        <i class="fas fa-users text-white text-2xl"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold mb-3">Corporate Travel</h3>
-                    <p class="text-gray-600 mb-4">Streamlined business travel management with dedicated account support.</p>
-                    <ul class="space-y-2 text-sm text-gray-600">
-                        <li><i class="fas fa-check text-green-500 mr-2"></i>Corporate accounts</li>
-                        <li><i class="fas fa-check text-green-500 mr-2"></i>Group bookings</li>
-                        <li><i class="fas fa-check text-green-500 mr-2"></i>Event planning</li>
-                        <li><i class="fas fa-check text-green-500 mr-2"></i>Invoice billing</li>
-                    </ul>
-                    <a href="#contact" class="mt-6 inline-block text-[var(--color-primary)] font-semibold hover:underline">
-                        Corporate Solutions →
-                    </a>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- Featured Destinations -->
-    <section id="destinations" class="py-20 bg-[var(--color-gray)]">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl md:text-5xl font-bold mb-4" data-aos="fade-up">Popular Destinations</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="100">
-                    Explore our handpicked destinations for unforgettable experiences
-                </p>
-            </div>
-
-            <div class="grid md:grid-cols-4 gap-6">
-                <!-- Destination Card -->
-                <div class="relative group overflow-hidden rounded-2xl cursor-pointer" data-aos="zoom-in">
-                    <img src="https://images.unsplash.com/photo-1611348524140-53c9a25263d6?w=400&h=500&fit=crop" 
-                         alt="Rwanda" class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                    <div class="absolute bottom-0 left-0 p-6 text-white">
-                        <h3 class="text-2xl font-bold mb-2">Rwanda</h3>
-                        <p class="text-sm opacity-90">Land of a Thousand Hills</p>
-                        <a href="#contact" class="mt-3 inline-block bg-white/20 backdrop-blur px-4 py-2 rounded-full text-sm hover:bg-white/30 transition">
-                            Book Now →
-                        </a>
-                    </div>
-                </div>
-
-                <div class="relative group overflow-hidden rounded-2xl cursor-pointer" data-aos="zoom-in" data-aos-delay="100">
-                    <img src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=400&h=500&fit=crop" 
-                         alt="Kenya" class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                    <div class="absolute bottom-0 left-0 p-6 text-white">
-                        <h3 class="text-2xl font-bold mb-2">Kenya</h3>
-                        <p class="text-sm opacity-90">Safari Adventure</p>
-                        <a href="#contact" class="mt-3 inline-block bg-white/20 backdrop-blur px-4 py-2 rounded-full text-sm hover:bg-white/30 transition">
-                            Book Now →
-                        </a>
-                    </div>
-                </div>
-
-                <!-- --- MODIFIED: Dubai Image --- -->
-                <div class="relative group overflow-hidden rounded-2xl cursor-pointer" data-aos="zoom-in" data-aos-delay="200">
-                    <img src="https://www.freemontgroup.com/CMSPages/GetFile.aspx?guid=14ad1f0d-7d6a-45f6-9995-a68a05ba5e8a" 
-                         alt="Dubai" class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500"
-                         onerror="this.src='https://placehold.co/400x500/cccccc/666666?text=Image+Not+Found'">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                    <div class="absolute bottom-0 left-0 p-6 text-white">
-                        <h3 class="text-2xl font-bold mb-2">Dubai</h3>
-                        <p class="text-sm opacity-90">City of Gold</p>
-                        <a href="#contact" class="mt-3 inline-block bg-white/20 backdrop-blur px-4 py-2 rounded-full text-sm hover:bg-white/30 transition">
-                            Book Now →
-                        </a>
-                    </div>
-                </div>
-
-                <!-- --- MODIFIED: Zanzibar Image --- -->
-                <div class="relative group overflow-hidden rounded-2xl cursor-pointer" data-aos="zoom-in" data-aos-delay="300">
-                    <img src="https://www.safariventures.com/wp-content/uploads/z23.jpg" 
-                         alt="Zanzibar" class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500"
-                         onerror="this.src='https://placehold.co/400x500/cccccc/666666?text=Image+Not+Found'">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                    <div class="absolute bottom-0 left-0 p-6 text-white">
-                        <h3 class="text-2xl font-bold mb-2">Zanzibar</h3>
-                        <p class="text-sm opacity-90">Spice Island Paradise</p>
-                        <a href="#contact" class="mt-3 inline-block bg-white/20 backdrop-blur px-4 py-2 rounded-full text-sm hover:bg-white/30 transition">
-                            Book Now →
-                        </a>
+                    
+                    <!-- Service Card 7: Corporate Travel -->
+                    <div class="relative rounded-2xl p-8 card-hover shadow-lg flex flex-col justify-end min-h-[350px] bg-cover bg-center text-white" 
+                         style="background-image: url('https://cdn.prod.website-files.com/66a41388b1be9ba182f1e80c/684c6a770f972b8e9b2b9f1e_Corporate%20Travel%20Agencies.jpg');"
+                         data-aos="fade-up" data-aos-delay="600">
+                        <div class="absolute inset-0 bg-black/50 rounded-2xl"></div>
+                        <div class="relative z-10">
+                            <!-- MODIFIED: Added text-[var(--color-accent)] -->
+                            <h3 class="text-3xl font-bold mb-3 text-[var(--color-accent)] drop-shadow-md">Corporate Travel</h3>
+                            <p class="mb-4 font-medium">Streamlined business travel management with dedicated account support.</p>
+                            <a href="#contact" class="mt-6 inline-block text-white font-bold hover:underline">
+                                Corporate Solutions →
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
+        </section>
 
-            <div class="text-center mt-12">
-                <a href="#contact" class="bg-[var(--color-primary)] text-white px-8 py-3 rounded-full font-semibold hover:shadow-lg transition-all inline-block">
-                    Plan Your Trip
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials -->
-    <section class="py-20 bg-white">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl md:text-5xl font-bold mb-4" data-aos="fade-up">What Our Travelers Say</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="100">
-                    Real experiences from our valued clients
-                </p>
-            </div>
-
-            <div class="grid md:grid-cols-3 gap-8">
-                <!-- Testimonial 1 -->
-                <div class="bg-[var(--color-gray)] rounded-2xl p-8 text-center shadow-lg" data-aos="fade-up">
-                    <div class="mb-6">
-                        <div class="w-20 h-20 bg-gradient-to-br from-[var(--color-primary)] to-orange-400 rounded-full mx-auto mb-4 flex items-center justify-center text-white text-2xl font-bold">
-                            A.H
-                        </div>
-                        <div class="flex justify-center mb-4">
-                            <span class="text-[var(--color-accent)] text-xl">★★★★★</span>
-                        </div>
-                        <p class="text-gray-600 italic mb-4">
-                            "SunShine Travel exceeded all expectations! They handled my visa application to Canada flawlessly and found me the perfect hotel in Toronto. Their attention to detail is remarkable."
-                        </p>
-                        <h4 class="font-bold">A.H.</h4>
-                        <p class="text-sm text-gray-500">Dubai, UAE</p>
-                    </div>
-                </div>
-
-                <!-- Testimonial 2 -->
-                <div class="bg-[var(--color-gray)] rounded-2xl p-8 text-center shadow-lg" data-aos="fade-up" data-aos-delay="100">
-                    <div class="mb-6">
-                        <div class="w-20 h-20 bg-gradient-to-br from-[var(--color-secondary)] to-blue-400 rounded-full mx-auto mb-4 flex items-center justify-center text-white text-2xl font-bold">
-                            J.U
-                        </div>
-                        <div class="flex justify-center mb-4">
-                            <span class="text-[var(--color-accent)] text-xl">★★★★★</span>
-                        </div>
-                        <p class="text-gray-600 italic mb-4">
-                            "Ni abanyamwuga! The gorilla trekking package was perfectly organized. From pickup to the actual trek, everything was smooth. Best travel agency in Kigali!"
-                        </p>
-                        <h4 class="font-bold">J.U.</h4>
-                        <p class="text-sm text-gray-500">Kigali, Rwanda</p>
-                    </div>
-                </div>
-
-                <!-- Testimonial 3 -->
-                <div class="bg-[var(--color-gray)] rounded-2xl p-8 text-center shadow-lg" data-aos="fade-up" data-aos-delay="200">
-                    <div class="mb-6">
-                        <div class="w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-400 rounded-full mx-auto mb-4 flex items-center justify-center text-white text-2xl font-bold">
-                            S.D
-                        </div>
-                        <div class="flex justify-center mb-4">
-                            <span class="text-[var(--color-accent)] text-xl">★★★★★</span>
-                        </div>
-                        <p class="text-gray-600 italic mb-4">
-                            "Service exceptionnel! They organized our corporate retreat perfectly. 20 people, multiple hotels, and complex logistics - all handled professionally."
-                        </p>
-                        <h4 class="font-bold">S.D.</h4>
-                        <p class="text-sm text-gray-500">Paris, France</p>
-                    </div>
-                </div>
-
-                <!-- Testimonial 4 -->
-                <div class="bg-[var(--color-gray)] rounded-2xl p-8 text-center shadow-lg" data-aos="fade-up" data-aos-delay="300">
-                    <div class="mb-6">
-                        <div class="w-20 h-20 bg-gradient-to-br from-green-500 to-teal-400 rounded-full mx-auto mb-4 flex items-center justify-center text-white text-2xl font-bold">
-                            M.T
-                        </div>
-                        <div class="flex justify-center mb-4">
-                            <span class="text-[var(--color-accent)] text-xl">★★★★★</span>
-                        </div>
-                        <p class="text-gray-600 italic mb-4">
-                            "Outstanding service! They helped me get my business visa to Rwanda in record time. The team is professional, responsive, and truly cares about their clients."
-                        </p>
-                        <h4 class="font-bold">M.T.</h4>
-                        <p class="text-sm text-gray-500">New York, USA</p>
-                    </div>
-                </div>
-
-                <!-- Testimonial 5 -->
-                <div class="bg-[var(--color-gray)] rounded-2xl p-8 text-center shadow-lg" data-aos="fade-up" data-aos-delay="400">
-                    <div class="mb-6">
-                        <div class="w-20 h-20 bg-gradient-to-br from-red-500 to-orange-400 rounded-full mx-auto mb-4 flex items-center justify-center text-white text-2xl font-bold">
-                            F.R
-                        </div>
-                        <div class="flex justify-center mb-4">
-                            <span class="text-[var(--color-accent)] text-xl">★★★★★</span>
-                        </div>
-                        <p class="text-gray-600 italic mb-4">
-                            "The best travel agency I've worked with! They arranged my family's entire East Africa tour. Every detail was perfect, from hotels to safari guides."
-                        </p>
-                        <h4 class="font-bold">F.R.</h4>
-                        <p class="text-sm text-gray-500">Riyadh, Saudi Arabia</p>
-                    </div>
-                </div>
-
-                <!-- Testimonial 6 -->
-                <div class="bg-[var(--color-gray)] rounded-2xl p-8 text-center shadow-lg" data-aos="fade-up" data-aos-delay="500">
-                    <div class="mb-6">
-                        <div class="w-20 h-20 bg-gradient-to-br from-[var(--color-accent)] to-yellow-400 rounded-full mx-auto mb-4 flex items-center justify-center text-white text-2xl font-bold">
-                            A.M
-                        </div>
-                        <div class="flex justify-center mb-4">
-                            <span class="text-[var(--color-accent)] text-xl">★★★★★</span>
-                        </div>
-                        <p class="text-gray-600 italic mb-4">
-                            "Mwarakoze cyane! They helped me plan my wedding guests' accommodation and tours. Everything was perfect. Highly recommend their services!"
-                        </p>
-                        <h4 class="font-bold">A.M.</h4>
-                        <p class="text-sm text-gray-500">Musanze, Rwanda</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- FAQ Section -->
-    <section class="py-20 bg-[var(--color-gray)]">
-        <div class="container mx-auto px-6 max-w-4xl">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl md:text-5xl font-bold mb-4" data-aos="fade-up">Frequently Asked Questions</h2>
-                <p class="text-gray-600" data-aos="fade-up" data-aos-delay="100">
-                    Find answers to common questions about our services
-                </p>
-            </div>
-
-            <div class="space-y-4" data-aos="fade-up" data-aos-delay="200">
-                <!-- FAQ Item 1 -->
-                <div class="bg-white rounded-xl">
-                    <button class="w-full px-6 py-4 text-left flex justify-between items-center" onclick="toggleAccordion(this)">
-                        <span class="font-semibold">How do I book services with SunShine Travel?</span>
-                        <i class="fas fa-chevron-down transition-transform"></i>
-                    </button>
-                    <div class="accordion-content px-6 pb-4">
-                        <p class="text-gray-600">
-                            You can book our services by calling us at +250 783867795, emailing Sunstravel@yahoo.com, 
-                            or visiting our office at KG 9 Ave, Kigali. You can also fill out our contact form below.
-                        </d>
-                    </div>
-                </div>
-
-                <!-- FAQ Item 2 -->
-                <div class="bg-white rounded-xl">
-                    <button class="w-full px-6 py-4 text-left flex justify-between items-center" onclick="toggleAccordion(this)">
-                        <span class="font-semibold">What documents do I need for visa assistance?</span>
-                        <i class="fas fa-chevron-down transition-transform"></i>
-                    </button>
-                    <div class="accordion-content px-6 pb-4">
-                        <p class="text-gray-600">
-                            Required documents vary by destination. Generally, you'll need a valid passport, passport photos, 
-                            application forms, proof of accommodation, travel itinerary, and financial statements. 
-                            We'll provide a complete checklist based on your specific destination.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- FAQ Item 3 -->
-                <div class="bg-white rounded-xl">
-                    <button class="w-full px-6 py-4 text-left flex justify-between items-center" onclick="toggleAccordion(this)">
-                        <span class="font-semibold">Do you offer group discounts?</span>
-                        <i class="fas fa-chevron-down transition-transform"></i>
-                    </button>
-                    <div class="accordion-content px-6 pb-4">
-                        <p class="text-gray-600">
-                            Yes! We offer attractive discounts for group bookings of 10 or more people. 
-                            Contact us directly for a customized group quote.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- FAQ Item 4 -->
-                <div class="bg-white rounded-xl">
-                    <button class="w-full px-6 py-4 text-left flex justify-between items-center" onclick="toggleAccordion(this)">
-                        <span class="font-semibold">What is your cancellation policy?</span>
-                        <i class="fas fa-chevron-down transition-transform"></i>
-                    </button>
-                    <div class="accordion-content px-6 pb-4">
-                        <p class="text-gray-600">
-                            Cancellation policies vary depending on the service. Hotel bookings typically allow free cancellation 
-                            up to 24-48 hours before check-in. Tour packages have specific terms outlined during booking. 
-                            We always recommend travel insurance to protect against unexpected cancellations.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- FAQ Item 5 -->
-                <div class="bg-white rounded-xl">
-                    <button class="w-full px-6 py-4 text-left flex justify-between items-center" onclick="toggleAccordion(this)">
-                        <span class="font-semibold">Can you help with emergency travel arrangements?</span>
-                        <i class="fas fa-chevron-down transition-transform"></i>
-                    </button>
-                    <div class="accordion-content px-6 pb-4">
-                        <p class="text-gray-600">
-                            Absolutely! We offer 24/7 emergency support for urgent travel needs. 
-                            Call our emergency hotline at +250 783867795 for immediate assistance.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="py-20 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] text-white">
-        <div class="container mx-auto px-6 text-center">
-            <h2 class="text-4xl md:text-5xl font-bold mb-6" data-aos="fade-up">
-                Ready to Start Your Journey?
-            </h2>
-            <p class="text-xl mb-8 max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="100">
-                Join thousands of satisfied travelers who trust SunShine Travel for their adventures
-            </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center" data-aos="fade-up" data-aos-delay="200">
-                <a href="#contact" class="bg-white text-[var(--color-primary)] px-8 py-4 rounded-full font-semibold hover:shadow-lg transition-all inline-block">
-                    Start Planning
-                </a>
-                <a href="tel:+250783867795" class="border-2 border-white text-white px-8 py-4 rounded-full font-semibold hover:bg-white hover:text-[var(--color-primary)] transition-all inline-block">
-                    Call Us Now
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="py-20 bg-white">
-        <div class="container mx-auto px-6">
-            <div class="grid md:grid-cols-2 gap-12">
-                <!-- Contact Info -->
-                <div data-aos="fade-right">
-                    <h2 class="text-4xl font-bold mb-6">Get in Touch</h2>
-                    <p class="text-gray-600 mb-8">
-                        Ready to book your next adventure? Contact us today and let our experienced team help you plan the perfect trip.
+        <!-- Featured Destinations -->
+        <section id="destinations" class="page-section py-20 bg-[var(--color-gray)]">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4" data-aos="fade-up">Popular Destinations</h2>
+                    <p class="text-gray-600 max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="100">
+                        Explore our handpicked destinations for unforgettable experiences
                     </p>
+                </div>
 
-                    <div class="space-y-6">
-                        <div class="flex items-start space-x-4">
-                            <div class="w-12 h-12 bg-[var(--color-primary)] rounded-full flex items-center justify-center flex-shrink-0">
-                                <i class="fas fa-map-marker-alt text-white"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-semibold mb-1">Visit Our Office</h4>
-                                <p class="text-gray-600">Kigali, Nyarugenge</p>
-                                <!-- --- MODIFIED: Office Hours --- -->
-                                <p class="text-sm text-gray-500">Monday-Saturday: 9AM-6:30PM</p>
-                            </div>
-                        </div>
-
-                        <div class="flex items-start space-x-4">
-                            <div class="w-12 h-12 bg-[var(--color-secondary)] rounded-full flex items-center justify-center flex-shrink-0">
-                                <i class="fas fa-phone text-white"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-semibold mb-1">Call Us</h4>
-                                <p class="text-gray-600">+250 783 867 795</p>
-                                <p class="text-sm text-gray-500">24/7 Emergency Support Available</p>
-                            </div>
-                        </div>
-
-                        <div class="flex items-start space-x-4">
-                            <div class="w-12 h-12 bg-[var(--color-accent)] rounded-full flex items-center justify-center flex-shrink-0">
-                                <i class="fas fa-envelope text-white"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-semibold mb-1">Email Us</h4>
-                                <p class="text-gray-600">Sunstravel@yahoo.com</p>
-                                <p class="text-sm text-gray-500">We'll respond within 24 hours</p>
-                            </div>
+                <div class="grid md:grid-cols-4 gap-6">
+                    <!-- Destination Card -->
+                    <div class="relative group overflow-hidden rounded-2xl cursor-pointer" data-aos="zoom-in">
+                        <img src="https://images.unsplash.com/photo-1611348524140-53c9a25263d6?w=400&h=500&fit=crop" 
+                             alt="Rwanda" class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 p-6 text-white">
+                            <h3 class="text-2xl font-bold mb-2">Rwanda</h3>
+                            <p class="text-sm opacity-90">Land of a Thousand Hills</p>
+                            <a href="#contact" class="mt-3 inline-block bg-white/20 backdrop-blur px-4 py-2 rounded-full text-sm hover:bg-white/30 transition">
+                                Book Now →
+                            </a>
                         </div>
                     </div>
 
-                    <!-- Social Media -->
-                    <div class="mt-8">
-                        <h4 class="font-semibold mb-4">Follow Us</h4>
-                        <div class="flex space-x-4">
-                            <a href="https://www.instagram.com/sunshine_kigali/" target="_blank" class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center hover:bg-[var(--color-primary)] hover:text-white transition">
-                                <i class="fab fa-instagram"></i>
+                    <div class="relative group overflow-hidden rounded-2xl cursor-pointer" data-aos="zoom-in" data-aos-delay="100">
+                        <img src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=400&h=500&fit=crop" 
+                             alt="Kenya" class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 p-6 text-white">
+                            <h3 class="text-2xl font-bold mb-2">Kenya</h3>
+                            <p class="text-sm opacity-90">Safari Adventure</p>
+                            <a href="#contact" class="mt-3 inline-block bg-white/20 backdrop-blur px-4 py-2 rounded-full text-sm hover:bg-white/30 transition">
+                                Book Now →
                             </a>
-                            <a href="https://wa.me/250783867795" target="_blank" class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center hover:bg-green-500 hover:text-white transition">
-                                <i class="fab fa-whatsapp"></i>
+                        </div>
+                    </div>
+
+                    <!-- Modified: Dubai Image -->
+                    <div class="relative group overflow-hidden rounded-2xl cursor-pointer" data-aos="zoom-in" data-aos-delay="200">
+                        <img src="https://www.freemontgroup.com/CMSPages/GetFile.aspx?guid=14ad1f0d-7d6a-45f6-9995-a68a05ba5e8a" 
+                             alt="Dubai" class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500"
+                             onerror="this.src='https://placehold.co/400x500/cccccc/666666?text=Image+Not+Found'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 p-6 text-white">
+                            <h3 class="text-2xl font-bold mb-2">Dubai</h3>
+                            <p class="text-sm opacity-90">City of Gold</p>
+                            <a href="#contact" class="mt-3 inline-block bg-white/20 backdrop-blur px-4 py-2 rounded-full text-sm hover:bg-white/30 transition">
+                                Book Now →
                             </a>
-                            <a href="mailto:Sunstravel@yahoo.com" class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center hover:bg-[var(--color-primary)] hover:text-white transition">
-                                <i class="fas fa-envelope"></i>
+                        </div>
+                    </div>
+
+                    <!-- Modified: Zanzibar Image -->
+                    <div class="relative group overflow-hidden rounded-2xl cursor-pointer" data-aos="zoom-in" data-aos-delay="300">
+                        <img src="https://www.safariventures.com/wp-content/uploads/z23.jpg" 
+                             alt="Zanzibar" class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500"
+                             onerror="this.src='https://placehold.co/400x500/cccccc/666666?text=Image+Not+Found'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 p-6 text-white">
+                            <h3 class="text-2xl font-bold mb-2">Zanzibar</h3>
+                            <p class="text-sm opacity-90">Spice Island Paradise</p>
+                            <a href="#contact" class="mt-3 inline-block bg-white/20 backdrop-blur px-4 py-2 rounded-full text-sm hover:bg-white/30 transition">
+                                Book Now →
                             </a>
                         </div>
                     </div>
                 </div>
 
-                <!-- Contact Form -->
-                <div data-aos="fade-left">
-                    <form class="bg-[var(--color-gray)] rounded-2xl p-8 shadow-lg" id="contactForm">
-                        <h3 class="text-2xl font-bold mb-6">Send Us a Message</h3>
-                        
-                        <div class="grid md:grid-cols-2 gap-4 mb-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">First Name *</label>
-                                <input type="text" class="custom-input w-full" required>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Last Name *</label>
-                                <input type="text" class="custom-input w-full" required>
-                            </div>
-                        </div>
+                <div class="text-center mt-12">
+                    <a href="#contact" class="bg-[var(--color-primary)] text-white px-8 py-3 rounded-full font-semibold hover:shadow-lg transition-all inline-block">
+                        Plan Your Trip
+                    </a>
+                </div>
+            </div>
+        </section>
 
-                        <div class="mb-4">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Email *</label>
-                            <input type="email" class="custom-input w-full" required>
-                        </div>
+        <!-- Testimonials -->
+        <section id="testimonials" class="page-section py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4" data-aos="fade-up">What Our Travelers Say</h2>
+                    <p class="text-gray-600 max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="100">
+                        Real experiences from our valued clients
+                    </p>
+                </div>
 
-                        <div class="mb-4">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Phone</label>
-                            <input type="tel" class="custom-input w-full">
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Service Interest</label>
-                            <select class="custom-input w-full">
-                                <option>Select a service</option>
-                                <option>Airline Ticketing</option> <!-- ADDED -->
-                                <option>Visa Assistance</option>
-                                <option>Hotel Reservation</option>
-                                <option>Tour Package</option>
-                                <option>Travel Insurance</option>
-                                <option>Car Rental</option>
-                                <option>Corporate Travel</option>
-                                <option>Other</option>
-                            </select>
-                        </div>
-
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Testimonial 1 -->
+                    <div class="bg-[var(--color-gray)] rounded-2xl p-8 text-center shadow-lg" data-aos="fade-up">
                         <div class="mb-6">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Message *</label>
-                            <textarea rows="4" class="custom-input w-full resize-none" required></textarea>
+                            <div class="w-20 h-20 bg-gradient-to-br from-[var(--color-primary)] to-orange-400 rounded-full mx-auto mb-4 flex items-center justify-center text-white text-2xl font-bold">
+                                A.H
+                            </div>
+                            <div class="flex justify-center mb-4">
+                                <span class="text-[var(--color-accent)] text-xl">★★★★★</span>
+                            </div>
+                            <p class="text-gray-600 italic mb-4">
+                                "SunShine Travel exceeded all expectations! They handled my visa application to Canada flawlessly and found me the perfect hotel in Toronto. Their attention to detail is remarkable."
+                            </p>
+                            <h4 class="font-bold">A.H.</h4>
+                            <p class="text-sm text-gray-500">Dubai, UAE</p>
                         </div>
+                    </div>
 
-                        <button type="submit" class="w-full bg-[var(--color-primary)] text-white py-3 rounded-lg font-semibold hover:shadow-lg transition-all">
-                            Send Message
-                        </button>
-                    </form>
+                    <!-- Testimonial 2 -->
+                    <div class="bg-[var(--color-gray)] rounded-2xl p-8 text-center shadow-lg" data-aos="fade-up" data-aos-delay="100">
+                        <div class="mb-6">
+                            <div class="w-20 h-20 bg-gradient-to-br from-[var(--color-secondary)] to-blue-400 rounded-full mx-auto mb-4 flex items-center justify-center text-white text-2xl font-bold">
+                                J.U
+                            </div>
+                            <div class="flex justify-center mb-4">
+                                <span class="text-[var(--color-accent)] text-xl">★★★★★</span>
+                            </div>
+                            <p class="text-gray-600 italic mb-4">
+                                "Ni abanyamwuga! The gorilla trekking package was perfectly organized. From pickup to the actual trek, everything was smooth. Best travel agency in Kigali!"
+                            </p>
+                            <h4 class="font-bold">J.U.</h4>
+                            <p class="text-sm text-gray-500">Kigali, Rwanda</p>
+                        </div>
+                    </div>
+
+                    <!-- Testimonial 3 -->
+                    <div class="bg-[var(--color-gray)] rounded-2xl p-8 text-center shadow-lg" data-aos="fade-up" data-aos-delay="200">
+                        <div class="mb-6">
+                            <div class="w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-400 rounded-full mx-auto mb-4 flex items-center justify-center text-white text-2xl font-bold">
+                                S.D
+                            </div>
+                            <div class="flex justify-center mb-4">
+                                <span class="text-[var(--color-accent)] text-xl">★★★★★</span>
+                            </div>
+                            <p class="text-gray-600 italic mb-4">
+                                "Service exceptionnel! They organized our corporate retreat perfectly. 20 people, multiple hotels, and complex logistics - all handled professionally."
+                            </p>
+                            <h4 class="font-bold">S.D.</h4>
+                            <p class="text-sm text-gray-500">Paris, France</p>
+                        </div>
+                    </div>
+
+                    <!-- Testimonial 4 -->
+                    <div class="bg-[var(--color-gray)] rounded-2xl p-8 text-center shadow-lg" data-aos="fade-up" data-aos-delay="300">
+                        <div class="mb-6">
+                            <div class="w-20 h-20 bg-gradient-to-br from-green-500 to-teal-400 rounded-full mx-auto mb-4 flex items-center justify-center text-white text-2xl font-bold">
+                                M.T
+                            </div>
+                            <div class="flex justify-center mb-4">
+                                <span class="text-[var(--color-accent)] text-xl">★★★★★</span>
+                            </div>
+                            <p class="text-gray-600 italic mb-4">
+                                "Outstanding service! They helped me get my business visa to Rwanda in record time. The team is professional, responsive, and truly cares about their clients."
+                            </p>
+                            <h4 class="font-bold">M.T.</h4>
+                            <p class="text-sm text-gray-500">New York, USA</p>
+                        </div>
+                    </div>
+
+                    <!-- Testimonial 5 -->
+                    <div class="bg-[var(--color-gray)] rounded-2xl p-8 text-center shadow-lg" data-aos="fade-up" data-aos-delay="400">
+                        <div class="mb-6">
+                            <div class="w-20 h-20 bg-gradient-to-br from-red-500 to-orange-400 rounded-full mx-auto mb-4 flex items-center justify-center text-white text-2xl font-bold">
+                                F.R
+                            </div>
+                            <div class="flex justify-center mb-4">
+                                <span class="text-[var(--color-accent)] text-xl">★★★★★</span>
+                            </div>
+                            <p class="text-gray-600 italic mb-4">
+                                "The best travel agency I've worked with! They arranged my family's entire East Africa tour. Every detail was perfect, from hotels to safari guides."
+                            </p>
+                            <h4 class="font-bold">F.R.</h4>
+                            <p class="text-sm text-gray-500">Riyadh, Saudi Arabia</p>
+                        </div>
+                    </div>
+
+                    <!-- Testimonial 6 -->
+                    <div class="bg-[var(--color-gray)] rounded-2xl p-8 text-center shadow-lg" data-aos="fade-up" data-aos-delay="500">
+                        <div class="mb-6">
+                            <div class="w-20 h-20 bg-gradient-to-br from-[var(--color-accent)] to-yellow-400 rounded-full mx-auto mb-4 flex items-center justify-center text-white text-2xl font-bold">
+                                A.M
+                            </div>
+                            <div class="flex justify-center mb-4">
+                                <span class="text-[var(--color-accent)] text-xl">★★★★★</span>
+                            </div>
+                            <p class="text-gray-600 italic mb-4">
+                                "Mwarakoze cyane! They helped me plan my wedding guests' accommodation and tours. Everything was perfect. Highly recommend their services!"
+                            </p>
+                            <h4 class="font-bold">A.M.</h4>
+                            <p class="text-sm text-gray-500">Musanze, Rwanda</p>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section id="faq" class="page-section py-20 bg-[var(--color-gray)]">
+            <div class="container mx-auto px-6 max-w-4xl">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4" data-aos="fade-up">Frequently Asked Questions</h2>
+                    <p class="text-gray-600" data-aos="fade-up" data-aos-delay="100">
+                        Find answers to common questions about our services
+                    </p>
+                </div>
+
+                <div class="space-y-4" data-aos="fade-up" data-aos-delay="200">
+                    <!-- FAQ Item 1 -->
+                    <div class="bg-white rounded-xl">
+                        <button class="w-full px-6 py-4 text-left flex justify-between items-center" onclick="toggleAccordion(this)">
+                            <span class="font-semibold">How do I book services with SunShine Travel?</span>
+                            <i class="fas fa-chevron-down transition-transform"></i>
+                        </button>
+                        <div class="accordion-content px-6 pb-4">
+                            <p class="text-gray-600">
+                                You can book our services by calling us at +250 783867795, emailing Sunstravel@yahoo.com, 
+                                or visiting our office at KG 9 Ave, Kigali. You can also fill out our contact form below.
+                            </d>
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 2 -->
+                    <div class="bg-white rounded-xl">
+                        <button class="w-full px-6 py-4 text-left flex justify-between items-center" onclick="toggleAccordion(this)">
+                            <span class="font-semibold">What documents do I need for visa assistance?</span>
+                            <i class="fas fa-chevron-down transition-transform"></i>
+                        </button>
+                        <div class="accordion-content px-6 pb-4">
+                            <p class="text-gray-600">
+                                Required documents vary by destination. Generally, you'll need a valid passport, passport photos, 
+                                application forms, proof of accommodation, travel itinerary, and financial statements. 
+                                We'll provide a complete checklist based on your specific destination.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 3 -->
+                    <div class="bg-white rounded-xl">
+                        <button class="w-full px-6 py-4 text-left flex justify-between items-center" onclick="toggleAccordion(this)">
+                            <span class="font-semibold">Do you offer group discounts?</span>
+                            <i class="fas fa-chevron-down transition-transform"></i>
+                        </button>
+                        <div class="accordion-content px-6 pb-4">
+                            <p class="text-gray-600">
+                                Yes! We offer attractive discounts for group bookings of 10 or more people. 
+                                Contact us directly for a customized group quote.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 4 -->
+                    <div class="bg-white rounded-xl">
+                        <button class="w-full px-6 py-4 text-left flex justify-between items-center" onclick="toggleAccordion(this)">
+                            <span class="font-semibold">What is your cancellation policy?</span>
+                            <i class="fas fa-chevron-down transition-transform"></i>
+                        </button>
+                        <div class="accordion-content px-6 pb-4">
+                            <p class="text-gray-600">
+                                Cancellation policies vary depending on the service. Hotel bookings typically allow free cancellation 
+                                up to 24-48 hours before check-in. Tour packages have specific terms outlined during booking. 
+                                We always recommend travel insurance to protect against unexpected cancellations.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 5 -->
+                    <div class="bg-white rounded-xl">
+                        <button class="w-full px-6 py-4 text-left flex justify-between items-center" onclick="toggleAccordion(this)">
+                            <span class="font-semibold">Can you help with emergency travel arrangements?</span>
+                            <i class="fas fa-chevron-down transition-transform"></i>
+                        </button>
+                        <div class="accordion-content px-6 pb-4">
+                            <p class="text-gray-600">
+                                Absolutely! We offer 24/7 emergency support for urgent travel needs. 
+                                Call our emergency hotline at +250 783867795 for immediate assistance.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section id="cta" class="page-section py-20 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] text-white">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6" data-aos="fade-up">
+                    Ready to Start Your Journey?
+                </h2>
+                <p class="text-xl mb-8 max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="100">
+                    Join thousands of satisfied travelers who trust SunShine Travel for their adventures
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center" data-aos="fade-up" data-aos-delay="200">
+                    <a href="#contact" class="bg-white text-[var(--color-primary)] px-8 py-4 rounded-full font-semibold hover:shadow-lg transition-all inline-block">
+                        Start Planning
+                    </a>
+                    <a href="tel:+250783867795" class="border-2 border-white text-white px-8 py-4 rounded-full font-semibold hover:bg-white hover:text-[var(--color-primary)] transition-all inline-block">
+                        Call Us Now
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="page-section py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="grid md:grid-cols-2 gap-12">
+                    <!-- Contact Info -->
+                    <div data-aos="fade-right">
+                        <h2 class="text-4xl font-bold mb-6">Get in Touch</h2>
+                        <p class="text-gray-600 mb-8">
+                            Ready to book your next adventure? Contact us today and let our experienced team help you plan the perfect trip.
+                        </p>
+
+                        <div class="space-y-6">
+                            <div class="flex items-start space-x-4">
+                                <div class="w-12 h-12 bg-[var(--color-primary)] rounded-full flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-map-marker-alt text-white"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold mb-1">Visit Our Office</h4>
+                                    <p class="text-gray-600">Kigali, Nyarugenge</p>
+                                    <p class="text-sm text-gray-500">Monday-Saturday: 9AM-6:30PM</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start space-x-4">
+                                <div class="w-12 h-12 bg-[var(--color-secondary)] rounded-full flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-phone text-white"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold mb-1">Call Us</h4>
+                                    <p class="text-gray-600">+250 783 867 795</p>
+                                    <p class="text-sm text-gray-500">24/7 Emergency Support Available</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start space-x-4">
+                                <div class="w-12 h-12 bg-[var(--color-accent)] rounded-full flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-envelope text-white"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold mb-1">Email Us</h4>
+                                    <p class="text-gray-600">Sunstravel@yahoo.com</p>
+                                    <p class="text-sm text-gray-500">We'll respond within 24 hours</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Social Media -->
+                        <div class="mt-8">
+                            <h4 class="font-semibold mb-4">Follow Us</h4>
+                            <div class="flex space-x-4">
+                                <a href="https://www.instagram.com/sunshine_kigali/" target="_blank" class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center hover:bg-[var(--color-primary)] hover:text-white transition">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                                <a href="https://wa.me/250783867795" target="_blank" class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center hover:bg-green-500 hover:text-white transition">
+                                    <i class="fab fa-whatsapp"></i>
+                                </a>
+                                <a href="mailto:Sunstravel@yahoo.com" class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center hover:bg-[var(--color-primary)] hover:text-white transition">
+                                    <i class="fas fa-envelope"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact Form -->
+                    <div data-aos="fade-left">
+                        <form class="bg-[var(--color-gray)] rounded-2xl p-8 shadow-lg" id="contactForm">
+                            <h3 class="text-2xl font-bold mb-6">Send Us a Message</h3>
+                            
+                            <div class="grid md:grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">First Name *</label>
+                                    <input type="text" class="custom-input w-full" required>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Last Name *</label>
+                                    <input type="text" class="custom-input w-full" required>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Email *</label>
+                                <input type="email" class="custom-input w-full" required>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Phone</label>
+                                <input type="tel" class="custom-input w-full">
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Service Interest</label>
+                                <select class="custom-input w-full">
+                                    <option>Select a service</option>
+                                    <option>Airline Ticketing</option>
+                                    <option>Visa Assistance</option>
+                                    <option>Hotel Reservation</option>
+                                    <option>Tour Package</option>
+                                    <option>Travel Insurance</option>
+                                    <option>Car Rental</option>
+                                    <option>Corporate Travel</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-6">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Message *</label>
+                                <textarea rows="4" class="custom-input w-full resize-none" required></textarea>
+                            </div>
+
+                            <button type="submit" class="w-full bg-[var(--color-primary)] text-white py-3 rounded-lg font-semibold hover:shadow-lg transition-all">
+                                Send Message
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- 
+    ============================================================
+    NEW BLOG & ADMIN SECTIONS
+    ============================================================
+    -->
+
+    <!-- Blog List Page -->
+    <section id="blog-page" class="page-section hidden bg-white py-20">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl md:text-5xl font-bold mb-12 text-center" data-aos="fade-up">
+                SunShine Travel <span class="text-[var(--color-primary)]">Blog</span>
+            </h2>
+            <div id="blog-list-container" class="grid md:grid-cols-3 gap-8">
+                <!-- Blog posts will be injected here by JavaScript -->
+                <div class="loader"></div> <!-- Loading indicator -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Single Blog Post Page -->
+    <section id="blog-post-page" class="page-section hidden bg-white py-20">
+        <div class="container mx-auto px-6 max-w-3xl">
+            <!-- Container for the post content itself -->
+            <div id="blog-post-container">
+                <!-- Single post content will be injected here by JavaScript -->
+                <div class="loader"></div> <!-- Loading indicator -->
+            </div>
+
+            <!-- NEW: Comment Section -->
+            <div id="comment-section" class="mt-16">
+                <h3 class="text-3xl font-bold mb-6">Leave a Comment</h3>
+                
+                <!-- Comment Form -->
+                <form id="comment-form" class="bg-gray-50 p-6 rounded-lg shadow-sm mb-12">
+                    <div class="mb-4">
+                        <label for="comment-name" class="block text-sm font-medium text-gray-700 mb-2">Name *</label>
+                        <input type="text" id="comment-name" class="custom-input w-full" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="comment-content" class="block text-sm font-medium text-gray-700 mb-2">Comment *</label>
+                        <textarea id="comment-content" rows="4" class="custom-input w-full resize-none" required></textarea>
+                    </div>
+                    <button type="submit" class="bg-[var(--color-primary)] text-white py-2.5 px-6 rounded-lg font-semibold hover:shadow-lg transition-all">
+                        Submit Comment
+                    </button>
+                    <p id="comment-message" class="text-sm mt-4 hidden"></p>
+                </form>
+
+                <!-- Comment Display List -->
+                <h3 class="text-3xl font-bold mb-6">Comments</h3>
+                <div id="comment-list">
+                    <!-- Comments will be injected here by JavaScript -->
+                    <p class="text-gray-500">No comments yet. Be the first!</p>
+                </div>
+            </div>
+            <!-- End Comment Section -->
+
+            <div class="mt-12 text-center">
+                <a href="#blog" class="text-[var(--color-primary)] font-semibold hover:underline">
+                    &larr; Back to all posts
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Admin Login Page -->
+    <!-- MODIFIED: Title changed -->
+    <section id="admin-login-page" class="page-section hidden bg-[var(--color-gray)] py-20 flex items-center justify-center">
+        <div class="bg-white rounded-2xl p-8 shadow-lg max-w-md w-full" data-aos="zoom-in">
+            <h2 class="text-3xl font-bold text-center mb-6">Login</h2>
+            <form id="admin-login-form">
+                <div class="mb-4">
+                    <label for="admin-email" class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                    <input type="email" id="admin-email" class="custom-input w-full" required>
+                </div>
+                <div class="mb-6">
+                    <label for="admin-password" class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                    <input type="password" id="admin-password" class="custom-input w-full" required>
+                </div>
+                <button type="submit" class="w-full bg-[var(--color-secondary)] text-white py-3 rounded-lg font-semibold hover:shadow-lg transition-all">
+                    Login
+                </button>
+                <p id="login-error" class="text-red-500 text-sm mt-4 text-center hidden"></p>
+            </form>
+        </div>
+    </section>
+
+    <!-- Admin Dashboard Page -->
+    <section id="admin-dashboard-page" class="page-section hidden bg-[var(--color-gray)] py-20">
+        <div class="container mx-auto px-6">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-3xl font-bold">Admin Dashboard</h2>
+                <button id="logout-button" class="bg-red-500 text-white px-6 py-2.5 rounded-full font-semibold hover:shadow-lg transition-all">
+                    Logout
+                </button>
+            </div>
+
+            <!-- Create/Edit Post Form -->
+            <div class="bg-white rounded-2xl p-8 shadow-lg mb-12">
+                <h3 id="form-title" class="text-2xl font-bold mb-6">Create New Post</h3>
+                <form id="post-form" data-editing-id="">
+                    <div class="mb-4">
+                        <label for="post-title" class="block text-sm font-medium text-gray-700 mb-2">Title *</label>
+                        <input type="text" id="post-title" class="custom-input w-full" required>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="post-image" class="block text-sm font-medium text-gray-700 mb-2">Cover Image * (Max 5MB)</label>
+                        <input type="file" id="post-image" class="custom-input w-full custom-file-input" accept="image/png, image/jpeg">
+                        <p class="text-sm text-gray-500 mt-1">Leave blank if you don't want to update the existing image while editing.</p>
+                        <img id="image-preview" src="" alt="Image preview" class="hidden w-32 h-32 object-cover rounded-lg mt-4"/>
+                    </div>
+                    
+                    <!-- MODIFIED: Replaced textarea with Quill editor container -->
+                    <div class="mb-6">
+                        <label for="editor-container" class="block text-sm font-medium text-gray-700 mb-2">Content *</label>
+                        <div id="editor-container"></div>
+                    </div>
+                    
+                    <div class="flex gap-4">
+                        <button type="submit" id="form-submit-btn" class="bg-[var(--color-primary)] text-white py-3 px-8 rounded-lg font-semibold hover:shadow-lg transition-all">
+                            Create Post
+                        </button>
+                        <button type="button" id="form-cancel-btn" class="bg-gray-300 text-gray-800 py-3 px-8 rounded-lg font-semibold hover:shadow-lg transition-all hidden">
+                            Cancel Edit
+                        </button>
+                    </div>
+                    <p id="form-message" class="text-sm mt-4 hidden"></p>
+                </form>
+            </div>
+
+            <!-- Manage Posts List -->
+            <div class="bg-white rounded-2xl p-8 shadow-lg mb-12">
+                <h3 class="text-2xl font-bold mb-6">Manage Posts</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr class="border-b">
+                                <th class="py-3 px-4">Title</th>
+                                <th class="py-3 px-4 hidden md:table-cell">Created At</th>
+                                <th class="py-3 px-4">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="manage-posts-list">
+                            <!-- Admin post list will be injected here by JavaScript -->
+                            <tr><td colspan="3"><div class="loader"></div></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- NEW: Manage Comments List -->
+            <div class="bg-white rounded-2xl p-8 shadow-lg">
+                <h3 class="text-2xl font-bold mb-6">Manage Comments</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr class="border-b">
+                                <th class="py-3 px-4">Comment</th>
+                                <th class="py-3 px-4 hidden sm:table-cell">Author</th>
+                                <th class="py-3 px-4 hidden md:table-cell">Post</th>
+                                <th class="py-3 px-4">Status</th>
+                                <th class="py-3 px-4">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="manage-comments-list">
+                            <!-- Admin comments list will be injected here by JavaScript -->
+                            <tr><td colspan="5"><div class="loader"></div></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
     </section>
 
@@ -1043,10 +1343,12 @@
             <div class="grid md:grid-cols-4 gap-8 mb-8">
                 <!-- Company Info -->
                 <div>
-                    <img src="https://i.imgur.com/W7PgYCj.jpeg" alt="Logo" class="h-12 w-12 rounded-lg mb-4">
+                    <!-- MODIFIED: Logo updated -->
+                    <img src="https://i.imgur.com/W7PgYCj_d.jpeg?maxwidth=520&shape=thumb&fidelity=high" alt="Logo" class="h-12 w-12 rounded-lg mb-4 object-cover" onerror="this.src='https://placehold.co/48x48/cccccc/666666?text=Logo'">
                     <h3 class="font-bold text-xl mb-2">SunShine Travel</h3>
+                    <!-- MODIFIED: Text updated -->
                     <p class="text-gray-400 text-sm">
-                        Your trusted travel partner in Rwanda, making dreams come true since 2012.
+                        Your trusted travel partner in Rwanda, making dreams come true since 2009.
                     </p>
                 </div>
 
@@ -1057,6 +1359,7 @@
                         <li><a href="#about" class="hover:text-white transition">About Us</a></li>
                         <li><a href="#services" class="hover:text-white transition">Services</a></li>
                         <li><a href="#destinations" class="hover:text-white transition">Destinations</a></li>
+                        <li><a href="#blog" class="hover:text-white transition">Blog</a></li>
                     </ul>
                 </div>
 
@@ -1079,6 +1382,8 @@
                         <li><i class="fas fa-phone mr-2"></i>+250 783 867 795</li>
                         <li><i class="fas fa-envelope mr-2"></i>Sunstravel@yahoo.com</li>
                         <li><i class="fas fa-map-marker-alt mr-2"></i>Kigali, Nyarugenge</li>
+                        <!-- MODIFIED: "Admin Login" text changed -->
+                        <li><i class="fas fa-user-shield mr-2"></i><a href="#admin-login" class="hover:text-white transition">Login</a></li>
                     </ul>
                 </div>
             </div>
@@ -1133,12 +1438,12 @@
         <i class="fab fa-whatsapp text-white text-2xl"></i>
     </a>
 
-    <!-- --- MODIFIED: Scroll to Top Button --- -->
+    <!-- Scroll to Top Button -->
     <button id="scrollTop" class="fixed bottom-24 left-6 w-12 h-12 bg-[var(--color-primary)] text-white rounded-full shadow-lg opacity-0 invisible transition-all hover:scale-110 z-40">
         <i class="fas fa-arrow-up"></i>
     </button>
 
-    <!-- --- ADDED: Form Success Modal --- -->
+    <!-- Form Success Modal -->
     <div id="formSuccessModal" class="fixed inset-0 z-[70] bg-black/50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-xl p-8 max-w-sm w-full text-center" data-aos="zoom-in">
             <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -1154,16 +1459,18 @@
 
     <!-- Scripts -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <!-- MODIFIED: Removed marked.js, added Quill.js -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     
     <script>
-        // Initialize AOS
+        // Initialize AOS (Existing)
         AOS.init({
             duration: 1000,
             once: true,
             offset: 100
         });
 
-        // Header Scroll Effect
+        // Header Scroll Effect (Existing)
         window.addEventListener('scroll', () => {
             const header = document.getElementById('header');
             if (window.scrollY > 50) {
@@ -1172,7 +1479,7 @@
                 header.classList.remove('header-scrolled');
             }
 
-            // Scroll to Top Button
+            // Scroll to Top Button (Existing)
             const scrollTop = document.getElementById('scrollTop');
             if (window.scrollY > 300) {
                 scrollTop.classList.remove('opacity-0', 'invisible');
@@ -1183,12 +1490,12 @@
             }
         });
 
-        // Scroll to Top
+        // Scroll to Top (Existing)
         document.getElementById('scrollTop').addEventListener('click', () => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
-        // Mobile Menu
+        // Mobile Menu (Existing)
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
         const mobileMenu = document.getElementById('mobileMenu');
         const mobileMenuPanel = document.getElementById('mobileMenuPanel');
@@ -1215,12 +1522,21 @@
             }
         });
 
-        // Mobile menu links close menu
-        document.querySelectorAll('#mobileMenuPanel a').forEach(link => {
-            link.addEventListener('click', closeMobileMenuFunc);
+        // Mobile menu links close menu (Modified to include blog)
+        document.querySelectorAll('#mobileMenuPanel a, a.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                if(link.closest('#mobileMenuPanel')) {
+                    closeMobileMenuFunc();
+                }
+                if (link.href.includes('#')) {
+                    // Don't prevent default for hash links, let the router handle it
+                } else {
+                    // Keep default behavior for external links
+                }
+            });
         });
 
-        // FAQ Accordion
+        // FAQ Accordion (Existing)
         function toggleAccordion(button) {
             const content = button.nextElementSibling;
             const icon = button.querySelector('i');
@@ -1229,7 +1545,7 @@
             icon.classList.toggle('rotate-180');
         }
 
-        // Live Chat Functions
+        // Live Chat Functions (Existing)
         function toggleChat() {
             const chatBox = document.getElementById('chatBox');
             chatBox.classList.toggle('active');
@@ -1238,7 +1554,6 @@
         function sendQuickMessage(question) {
             const chatMessages = document.getElementById('chatMessages');
             
-            // Add user message
             const userMessage = document.createElement('div');
             userMessage.className = 'message user text-right mb-3';
             userMessage.innerHTML = `
@@ -1248,7 +1563,6 @@
             `;
             chatMessages.appendChild(userMessage);
             
-            // Show typing indicator
             const typingIndicator = document.createElement('div');
             typingIndicator.className = 'message bot';
             typingIndicator.innerHTML = `
@@ -1260,11 +1574,8 @@
                 </div>
             `;
             chatMessages.appendChild(typingIndicator);
-            
-            // Scroll to bottom
             chatMessages.scrollTop = chatMessages.scrollHeight;
             
-            // Simulate bot response
             setTimeout(() => {
                 typingIndicator.remove();
                 
@@ -1276,7 +1587,6 @@
                     case 'How do I book a trip?':
                         response = 'You can book by calling +250 783867795, emailing Sunstravel@yahoo.com, or filling out our contact form. We\'ll help you plan your perfect trip!';
                         break;
-                    // --- MODIFIED: Office Hours Response ---
                     case 'What are your office hours?':
                         response = 'Our office in Kigali, Nyarugenge is open Monday-Saturday: 9AM-6:30PM. For emergencies, call our 24/7 hotline.';
                         break;
@@ -1305,46 +1615,723 @@
             }, 1500);
         }
 
-        // Smooth Scroll for Navigation Links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
-        // --- MODIFIED: Form Submission with Modal ---
+        // Form Submission with Modal (Existing)
         const contactForm = document.getElementById('contactForm');
         const formModal = document.getElementById('formSuccessModal');
         const closeModalBtn = document.getElementById('closeModalBtn');
 
         contactForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            // Show the modal
             formModal.classList.remove('hidden');
-            formModal.classList.add('flex'); // Make it visible
-            // Reset the form
+            formModal.classList.add('flex');
             e.target.reset();
         });
 
         function closeModal() {
             formModal.classList.add('hidden');
-            formModal.classList.remove('flex'); // Hide it
+            formModal.classList.remove('flex');
         }
 
-        // Close modal listeners
         closeModalBtn.addEventListener('click', closeModal);
         formModal.addEventListener('click', (e) => {
             if (e.target === formModal) {
                 closeModal();
             }
         });
+    </script>
+    
+    <!-- 
+    ============================================================
+    NEW SUPABASE BLOG & ADMIN SCRIPT
+    ============================================================
+    -->
+    <script type="module">
+        // --- 1. SUPABASE INITIALIZATION ---
+        // IMPORTANT: You MUST create a 'comments' table in Supabase
+        // and set RLS rules for it to work.
+        /* SQL for 'comments' table:
+        CREATE TABLE comments (
+          id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+          created_at TIMESTAMPTZ DEFAULT now() NOT NULL,
+          post_id UUID REFERENCES posts(id) ON DELETE CASCADE,
+          name TEXT NOT NULL,
+          content TEXT NOT NULL,
+          is_approved BOOLEAN DEFAULT FALSE NOT NULL
+        );
+
+        RLS for 'comments' table:
+        1. Enable RLS on the 'comments' table.
+        2. Create Policy "Allow public read access to approved comments"
+           ON comments FOR SELECT USING (is_approved = TRUE);
+        3. Create Policy "Allow public insert"
+           ON comments FOR INSERT WITH CHECK (TRUE);
+        4. Create Policy "Allow admin all access"
+           ON comments FOR ALL USING (auth.role() = 'authenticated');
+        */
+        const SUPABASE_URL = "https://wtazjqurwlbpqkhpszfz.supabase.co";
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind0YXpqcXVyd2xicHFraHBzemZ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEzNzU5MjAsImV4cCI6MjA3Njk1MTkyMH0.Y-pIDCf8FjwEpmB8-boRIh95fEL6JOdXle2G_n0JLhs";
+
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // --- 2. DOM ELEMENT REFERENCES ---
+        const mainContent = document.getElementById('main-content');
+        const blogPage = document.getElementById('blog-page');
+        const blogListContainer = document.getElementById('blog-list-container');
+        const blogPostPage = document.getElementById('blog-post-page');
+        const blogPostContainer = document.getElementById('blog-post-container');
+        const adminLoginPage = document.getElementById('admin-login-page');
+        const adminLoginForm = document.getElementById('admin-login-form');
+        const adminDashboardPage = document.getElementById('admin-dashboard-page');
+        const adminNavLink = document.getElementById('admin-nav-link');
+        const adminMobileLink = document.getElementById('admin-mobile-link');
+        const logoutButton = document.getElementById('logout-button');
+        const postForm = document.getElementById('post-form');
+        const formTitle = document.getElementById('form-title');
+        const formSubmitBtn = document.getElementById('form-submit-btn');
+        const formCancelBtn = document.getElementById('form-cancel-btn');
+        const formMessage = document.getElementById('form-message');
+        const postTitleInput = document.getElementById('post-title');
+        const postImageInput = document.getElementById('post-image');
+        const imagePreview = document.getElementById('image-preview');
+        const managePostsList = document.getElementById('manage-posts-list');
+        const loginError = document.getElementById('login-error');
+        
+        // NEW: Comment form elements
+        const commentForm = document.getElementById('comment-form');
+        const commentMessage = document.getElementById('comment-message');
+        const commentList = document.getElementById('comment-list');
+        const manageCommentsList = document.getElementById('manage-comments-list');
+
+        // NEW: Define full pages
+        const fullPages = [blogPage, blogPostPage, adminLoginPage, adminDashboardPage];
+        
+        // NEW: Quill editor instance
+        let quill;
+
+
+        // --- 3. PAGE ROUTING ---
+        // NEW: Define routes object
+        const routes = {
+            '#blog': blogPage,
+            '#blog-post': blogPostPage,
+            '#admin-login': adminLoginPage,
+            '#admin-dashboard': adminDashboardPage,
+        };
+        
+        async function router() {
+            window.scrollTo(0, 0); // Scroll to top on page change
+            let [hash, param] = window.location.hash.split('?id=');
+            
+            if (!hash) hash = '#home';
+            
+            // Find the page to show
+            const pageToShow = routes[hash]; // Will be undefined for #home, #services, etc.
+
+            if (pageToShow) {
+                // It's a "full page" (Blog, Admin, etc.)
+                mainContent.classList.add('hidden');
+                fullPages.forEach(page => {
+                    if (page !== pageToShow) {
+                        page.classList.add('hidden');
+                    }
+                });
+                pageToShow.classList.remove('hidden');
+
+                // Handle specific page logic
+                if (hash === '#blog') {
+                    await loadBlogPosts();
+                } else if (hash === '#blog-post' && param) {
+                    await loadSinglePost(param);
+                    // NEW: Load comments for the post
+                    await loadComments(param);
+                } else if (hash === '#admin-dashboard') {
+                    await checkAdminAccess(); // This will also init Quill
+                } else if (hash === '#admin-login') {
+                    // Just show the login page
+                }
+
+            } else {
+                // It's a "main content" section (#home, #services, etc.)
+                fullPages.forEach(page => page.classList.add('hidden'));
+                mainContent.classList.remove('hidden');
+                
+                // Scroll to the section
+                const section = document.querySelector(hash);
+                if (section) {
+                    setTimeout(() => {
+                        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 0);
+                } else if (hash !== '#home') {
+                    window.location.hash = '#home';
+                }
+            }
+        }
+        
+        window.addEventListener('hashchange', router);
+        window.addEventListener('DOMContentLoaded', router);
+
+        // --- 4. AUTHENTICATION ---
+        
+        supabaseClient.auth.onAuthStateChange((event, session) => {
+            if (session) {
+                adminNavLink.classList.remove('hidden');
+                adminMobileLink.classList.remove('hidden');
+                adminNavLink.href = '#admin-dashboard';
+                adminMobileLink.href = '#admin-dashboard';
+                adminNavLink.textContent = 'Dashboard';
+                adminMobileLink.textContent = 'Dashboard';
+            } else {
+                // MODIFIED: Text changed to 'Login'
+                adminNavLink.classList.remove('hidden'); // Keep it visible
+                adminMobileLink.classList.remove('hidden'); // Keep it visible
+                adminNavLink.href = '#admin-login';
+                adminMobileLink.href = '#admin-login';
+                adminNavLink.textContent = 'Login';
+                adminMobileLink.textContent = 'Login';
+            }
+        });
+        
+        adminLoginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('admin-email').value;
+            const password = document.getElementById('admin-password').value;
+            
+            const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+            
+            if (error) {
+                console.error('Login Error:', error.message);
+                loginError.textContent = 'Invalid email or password.';
+                loginError.classList.remove('hidden');
+            } else {
+                loginError.classList.add('hidden');
+                window.location.hash = '#admin-dashboard';
+            }
+        });
+        
+        logoutButton.addEventListener('click', async () => {
+            const { error } = await supabaseClient.auth.signOut();
+            if (error) {
+                console.error('Logout Error:', error.message);
+            } else {
+                window.location.hash = '#home';
+            }
+        });
+
+        async function checkAdminAccess() {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            if (!session) {
+                window.location.hash = '#admin-login';
+            } else {
+                initializeQuill(); // Initialize the editor on access
+                await loadAdminDashboard();
+            }
+        }
+
+        // --- 5. BLOG (PUBLIC) ---
+
+        async function loadBlogPosts() {
+            blogListContainer.innerHTML = '<div class="loader"></div>';
+            const { data: posts, error } = await supabaseClient
+                .from('posts')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            if (error) {
+                console.error('Error fetching posts:', error);
+                blogListContainer.innerHTML = '<p class="text-red-500">Could not load posts. Please try again later.</p>';
+                return;
+            }
+
+            if (posts.length === 0) {
+                blogListContainer.innerHTML = '<p class="col-span-full text-center text-gray-500">No blog posts found yet.</p>';
+                return;
+            }
+
+            blogListContainer.innerHTML = posts.map(post => `
+                <a href="#blog-post?id=${post.id}" class="block bg-white rounded-2xl shadow-lg card-hover" data-aos="fade-up">
+                    <img src="${post.image_url}" alt="${post.title}" class="w-full h-56 object-cover rounded-t-2xl">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold mb-3">${post.title}</h3>
+                        <!-- MODIFIED: Using stripHtml instead of stripMarkdown -->
+                        <p class="text-gray-600 mb-4 line-clamp-3">${stripHtml(post.content)}</p>
+                        <span class="text-[var(--color-primary)] font-semibold">
+                            Read More &rarr;
+                        </span>
+                        <p class="text-sm text-gray-400 mt-4">${new Date(post.created_at).toLocaleDateString()}</p>
+                    </div>
+                </a>
+            `).join('');
+            AOS.refresh();
+        }
+
+        async function loadSinglePost(id) {
+            blogPostContainer.innerHTML = '<div class="loader"></div>';
+            const { data: post, error } = await supabaseClient
+                .from('posts')
+                .select('*')
+                .eq('id', id)
+                .single();
+
+            if (error || !post) {
+                console.error('Error fetching single post:', error);
+                blogPostContainer.innerHTML = '<p class="text-red-500">Could not find this post.</p>';
+                return;
+            }
+
+            // MODIFIED: No longer parsing markdown. Directly using HTML content.
+            const postContentHtml = post.content;
+
+            blogPostContainer.innerHTML = `
+                <h1 class="text-4xl md:text-6xl font-bold mb-6">${post.title}</h1>
+                <p class="text-gray-500 mb-8">Posted on ${new Date(post.created_at).toLocaleDateString()}</p>
+                <img src="${post.image_url}" alt="${post.title}" class="w-full rounded-2xl shadow-lg mb-8">
+                <!-- This 'prose' class will style the raw HTML from the editor -->
+                <div class="prose max-w-none">
+                    ${postContentHtml}
+                </div>
+            `;
+            
+            // NEW: Set post-id on comment form
+            if (commentForm) {
+                commentForm.dataset.postId = id;
+            }
+        }
+
+        // --- 6. NEW: COMMENT SYSTEM (PUBLIC) ---
+
+        async function loadComments(postId) {
+            commentList.innerHTML = '<div class="loader"></div>';
+            const { data: comments, error } = await supabaseClient
+                .from('comments')
+                .select('*')
+                .eq('post_id', postId)
+                .eq('is_approved', true) // Only show approved comments
+                .order('created_at', { ascending: true });
+
+            if (error) {
+                console.error('Error fetching comments:', error);
+                commentList.innerHTML = '<p class="text-red-500">Could not load comments.</p>';
+                return;
+            }
+
+            if (comments.length === 0) {
+                commentList.innerHTML = '<p class="text-gray-500">No comments yet. Be the first!</p>';
+                return;
+            }
+
+            commentList.innerHTML = comments.map(comment => `
+                <div class="comment">
+                    <p class="comment-author">${comment.name}</p>
+                    <p class="comment-date">${new Date(comment.created_at).toLocaleString()}</p>
+                    <p class="comment-content">${comment.content}</p>
+                </div>
+            `).join('');
+        }
+
+        if (commentForm) {
+            commentForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const submitBtn = commentForm.querySelector('button[type="submit"]');
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Submitting...';
+
+                const name = document.getElementById('comment-name').value;
+                const content = document.getElementById('comment-content').value;
+                const postId = commentForm.dataset.postId;
+
+                const { error } = await supabaseClient
+                    .from('comments')
+                    .insert([
+                        { name: name, content: content, post_id: postId }
+                    ]);
+                
+                if (error) {
+                    console.error('Error submitting comment:', error);
+                    commentMessage.textContent = 'Error: Could not submit comment.';
+                    commentMessage.classList.remove('hidden', 'text-green-500');
+                    commentMessage.classList.add('text-red-500');
+                } else {
+                    commentMessage.textContent = 'Success! Your comment is awaiting moderation.';
+                    commentMessage.classList.remove('hidden', 'text-red-500');
+                    commentMessage.classList.add('text-green-500');
+                    commentForm.reset();
+                }
+
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit Comment';
+            });
+        }
+
+
+        // --- 7. ADMIN DASHBOARD (QUILL & COMMENTS) ---
+        
+        // NEW: Initialize Quill.js editor
+        function initializeQuill() {
+            if (quill) return; // Don't re-initialize
+            
+            const toolbarOptions = [
+                [{ 'header': [1, 2, 3, false] }],
+                ['bold', 'italic', 'underline'],
+                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                ['link', 'image'],
+                ['clean']
+            ];
+
+            quill = new Quill('#editor-container', {
+                modules: {
+                    toolbar: toolbarOptions
+                },
+                theme: 'snow'
+            });
+            
+            // NEW: Add custom image handler to upload to Supabase
+            quill.getModule('toolbar').addHandler('image', selectLocalImage);
+        }
+
+        // NEW: Custom image handler for Quill
+        function selectLocalImage() {
+            const input = document.createElement('input');
+            input.setAttribute('type', 'file');
+            input.setAttribute('accept', 'image/*');
+            input.click();
+
+            // Listen for file selection
+            input.onchange = async () => {
+                const file = input.files[0];
+                if (file) {
+                    if (file.size > 5 * 1024 * 1024) { // 5MB limit
+                        alert("Image is too large. Max 5MB.");
+                        return;
+                    }
+                    
+                    const range = quill.getSelection(true);
+                    quill.insertText(range.index, '\nUploading image, please wait...\n', 'italic', true);
+                    
+                    try {
+                        // 1. Upload image to Supabase Storage
+                        const fileName = `${Date.now()}-${file.name}`;
+                        const { data: uploadData, error: uploadError } = await supabaseClient.storage
+                            .from('blog-images') // Make sure 'blog-images' bucket exists
+                            .upload(fileName, file);
+                        
+                        if (uploadError) throw uploadError;
+
+                        // 2. Get public URL
+                        const { data: urlData } = supabaseClient.storage
+                            .from('blog-images')
+                            .getPublicUrl(fileName);
+                        
+                        const imageUrl = urlData.publicUrl;
+
+                        // 3. Insert image into editor
+                        quill.deleteText(range.index, 'Uploading image, please wait...'.length + 2);
+                        quill.insertEmbed(range.index, 'image', imageUrl);
+                        quill.setSelection(range.index + 1, Quill.sources.SILENT);
+
+                    } catch (error) {
+                         console.error('Quill Image upload error:', error);
+                         quill.deleteText(range.index, 'Uploading image, please wait...'.length + 2);
+                         alert('Error uploading image: ' + error.message);
+                    }
+                }
+            };
+        }
+
+        // MODIFIED: Renamed function
+        async function loadAdminPosts() {
+            managePostsList.innerHTML = '<tr><td colspan="3"><div class="loader"></div></td></tr>';
+            const { data: posts, error } = await supabaseClient
+                .from('posts')
+                .select('*')
+                .order('created_at', { ascending: false });
+                
+            if (error) {
+                console.error('Error fetching posts for admin:', error);
+                managePostsList.innerHTML = '<tr><td colspan="3" class="text-red-500">Could not load posts.</td></tr>';
+                return;
+            }
+            
+            if (posts.length === 0) {
+                managePostsList.innerHTML = '<tr><td colspan="3" class="text-center text-gray-500 py-4">No posts found. Create one above!</td></tr>';
+            } else {
+                managePostsList.innerHTML = posts.map(post => `
+                    <tr class="border-b" data-id="${post.id}">
+                        <td class="py-3 px-4 font-semibold">${post.title}</td>
+                        <td class="py-3 px-4 hidden md:table-cell text-sm text-gray-500">${new Date(post.created_at).toLocaleString()}</td>
+                        <td class="py-3 px-4 space-x-2">
+                            <button class="edit-btn text-blue-500 hover:underline" data-id="${post.id}">Edit</button>
+                            <button class="delete-btn text-red-500 hover:underline" data-id="${post.id}">Delete</button>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+        }
+        
+        // NEW: Function to load comments for admin
+        async function loadAdminComments() {
+            manageCommentsList.innerHTML = '<tr><td colspan="5"><div class="loader"></div></td></tr>';
+            // Select comments and join with posts table to get post title
+            const { data: comments, error } = await supabaseClient
+                .from('comments')
+                .select('*, posts(title)')
+                .order('created_at', { ascending: false });
+                
+            if (error) {
+                console.error('Error fetching comments for admin:', error);
+                manageCommentsList.innerHTML = '<tr><td colspan="5" class="text-red-500">Could not load comments.</td></tr>';
+                return;
+            }
+            
+            if (comments.length === 0) {
+                manageCommentsList.innerHTML = '<tr><td colspan="5" class="text-center text-gray-500 py-4">No comments found.</td></tr>';
+            } else {
+                manageCommentsList.innerHTML = comments.map(comment => `
+                    <tr class="border-b" data-id="${comment.id}">
+                        <td class="py-3 px-4 text-sm">${comment.content}</td>
+                        <td class="py-3 px-4 text-sm hidden sm:table-cell">${comment.name}</td>
+                        <td class="py-3 px-4 text-sm hidden md:table-cell">${comment.posts.title || 'Unknown Post'}</td>
+                        <td class="py-3 px-4 text-sm">
+                            ${comment.is_approved 
+                                ? '<span class="text-green-600 font-semibold">Approved</span>' 
+                                : '<span class="text-yellow-600 font-semibold">Pending</span>'}
+                        </td>
+                        <td class="py-3 px-4 space-x-2 whitespace-nowrap">
+                            ${!comment.is_approved 
+                                ? `<button class="approve-comment-btn text-green-500 hover:underline" data-id="${comment.id}">Approve</button>`
+                                : ''}
+                            <button class="delete-comment-btn text-red-500 hover:underline" data-id="${comment.id}">Delete</button>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+        }
+        
+        // NEW: Wrapper function to load all admin data
+        async function loadAdminDashboard() {
+            await loadAdminPosts();
+            await loadAdminComments();
+        }
+
+        postForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            formSubmitBtn.disabled = true;
+            formSubmitBtn.textContent = 'Saving...';
+            formMessage.classList.add('hidden');
+
+            const title = postTitleInput.value;
+            // MODIFIED: Get content from Quill editor as HTML
+            const content = quill.root.innerHTML;
+            const imageFile = postImageInput.files[0];
+            const editingId = postForm.dataset.editingId;
+
+            let imageUrl = null;
+            
+            try {
+                // Check for empty content
+                if (content === '<p><br></p>') {
+                    throw new Error("Content cannot be empty.");
+                }
+
+                // 1. Handle Cover Image Upload
+                if (imageFile) {
+                    if (imageFile.size > 5 * 1024 * 1024) { // 5MB limit
+                        throw new Error("Cover Image is too large. Max 5MB.");
+                    }
+                    const fileName = `${Date.now()}-${imageFile.name}`;
+                    const { data: uploadData, error: uploadError } = await supabaseClient.storage
+                        .from('blog-images')
+                        .upload(fileName, imageFile);
+                    
+                    if (uploadError) throw uploadError;
+
+                    const { data: urlData } = supabaseClient.storage
+                        .from('blog-images')
+                        .getPublicUrl(fileName);
+                    
+                    imageUrl = urlData.publicUrl;
+                }
+                
+                // 2. Prepare post data
+                const postData = {
+                    title,
+                    content // Storing HTML
+                };
+                
+                if (imageUrl) {
+                    postData.image_url = imageUrl;
+                }
+                
+                let dbError;
+                
+                // 3. Create or Update
+                if (editingId) {
+                    const { error } = await supabaseClient
+                        .from('posts')
+                        .update(postData)
+                        .eq('id', editingId);
+                    dbError = error;
+                } else {
+                    if (!imageUrl) {
+                        throw new Error("A cover image is required for a new post.");
+                    }
+                    const { error } = await supabaseClient
+                        .from('posts')
+                        .insert([postData]);
+                    dbError = error;
+                }
+                
+                if (dbError) throw dbError;
+                
+                // 4. Success
+                formMessage.textContent = `Post ${editingId ? 'updated' : 'created'} successfully!`;
+                formMessage.classList.remove('hidden', 'text-red-500');
+                formMessage.classList.add('text-green-500');
+                resetPostForm();
+                await loadAdminPosts(); // Only reload posts, not comments
+                
+            } catch (error) {
+                console.error('Error saving post:', error.message);
+                formMessage.textContent = `Error: ${error.message}`;
+                formMessage.classList.remove('hidden', 'text-green-500');
+                formMessage.classList.add('text-red-500');
+            } finally {
+                formSubmitBtn.disabled = false;
+                formSubmitBtn.textContent = editingId ? 'Update Post' : 'Create Post';
+            }
+        });
+
+        function resetPostForm() {
+            postForm.reset();
+            postForm.dataset.editingId = '';
+            formTitle.textContent = 'Create New Post';
+            formSubmitBtn.textContent = 'Create Post';
+            formCancelBtn.classList.add('hidden');
+            imagePreview.classList.add('hidden');
+            postImageInput.value = null;
+            // MODIFIED: Reset Quill editor
+            if (quill) {
+                quill.root.innerHTML = '<p><br></p>';
+            }
+        }
+
+        formCancelBtn.addEventListener('click', resetPostForm);
+        
+        postImageInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    imagePreview.src = event.target.result;
+                    imagePreview.classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            } else {
+                imagePreview.classList.add('hidden');
+            }
+        });
+        
+        managePostsList.addEventListener('click', async (e) => {
+            const target = e.target;
+            
+            if (target.classList.contains('edit-btn')) {
+                const id = target.dataset.id;
+                const { data: post, error } = await supabaseClient
+                    .from('posts')
+                    .select('*')
+                    .eq('id', id)
+                    .single();
+                
+                if (error) {
+                    alert('Could not fetch post to edit.');
+                    return;
+                }
+                
+                postForm.dataset.editingId = post.id;
+                postTitleInput.value = post.title;
+                // MODIFIED: Populate Quill editor
+                if (quill) {
+                    quill.root.innerHTML = post.content;
+                }
+                imagePreview.src = post.image_url;
+                imagePreview.classList.remove('hidden');
+                
+                formTitle.textContent = 'Edit Post';
+                formSubmitBtn.textContent = 'Update Post';
+                formCancelBtn.classList.remove('hidden');
+                
+                postForm.scrollIntoView({ behavior: 'smooth' });
+            }
+            
+            if (target.classList.contains('delete-btn')) {
+                const id = target.dataset.id;
+                const title = target.closest('tr').querySelector('td').textContent;
+                
+                // Using a custom modal is better, but confirm is simpler
+                if (confirm(`Are you sure you want to delete the post: "${title}"? This will also delete all its comments.`)) {
+                    // This will delete the post and cascade delete comments
+                    const { error } = await supabaseClient
+                        .from('posts')
+                        .delete()
+                        .eq('id', id);
+                    
+                    if (error) {
+                        alert(`Error deleting post: ${error.message}`);
+                    } else {
+                        alert('Post deleted successfully.');
+                        await loadAdminDashboard(); // Reload both posts and comments
+                    }
+                }
+            }
+        });
+
+        // NEW: Event listener for comment moderation
+        manageCommentsList.addEventListener('click', async (e) => {
+            const target = e.target;
+            const id = target.dataset.id;
+
+            if (target.classList.contains('approve-comment-btn')) {
+                const { error } = await supabaseClient
+                    .from('comments')
+                    .update({ is_approved: true })
+                    .eq('id', id);
+                
+                if (error) {
+                    alert(`Error approving comment: ${error.message}`);
+                } else {
+                    await loadAdminComments(); // Reload comments list
+                }
+            }
+            
+            if (target.classList.contains('delete-comment-btn')) {
+                if (confirm(`Are you sure you want to delete this comment?`)) {
+                    const { error } = await supabaseClient
+                        .from('comments')
+                        .delete()
+                        .eq('id', id);
+                    
+                    if (error) {
+                        alert(`Error deleting comment: ${error.message}`);
+                    } else {
+                        await loadAdminComments(); // Reload comments list
+                    }
+                }
+            }
+        });
+
+        // --- 8. UTILITY ---
+        
+        // MODIFIED: Replaced stripMarkdown with stripHtml
+        function stripHtml(html) {
+            if (!html) return '';
+            // Create a temporary div to parse the HTML
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = html;
+            // Get the text content, collapse whitespace, and trim
+            return (tempDiv.textContent || tempDiv.innerText || "")
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+
     </script>
 </body>
 </html>
