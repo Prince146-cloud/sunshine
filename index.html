@@ -37,8 +37,9 @@
             --color-secondary: #004E89;
             --color-accent: #FFD23F;
             --color-dark: #1A1B3A;
-            --color-light: #FFFFFF;
-            --color-gray: #F8F9FA;
+            /* MODIFIED: Changed to subtle blue tints */
+            --color-light: #F7FBFF; /* Was skyblue, original was #F7FBFF */
+            --color-gray: #F0F9FF;  /* Was skyblue, new tint (sky-50) */
             --color-text: #4A5568;
             --color-success: #48BB78;
         }
@@ -67,7 +68,7 @@
         }
         
         ::-webkit-scrollbar-track {
-            background: var(--color-gray);
+            background: var(--color-gray); /* MODIFIED: Was var(--color-light) */
         }
         
         ::-webkit-scrollbar-thumb {
@@ -77,7 +78,8 @@
 
         /* Header */
         .header-scrolled {
-            background: rgba(255, 255, 255, 0.98);
+            /* MODIFIED: Changed from skyblue to light tint with opacity */
+            background: rgba(247, 251, 255, 0.98); /* Use --color-light with opacity */
             backdrop-filter: blur(10px);
             box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
         }
@@ -121,7 +123,8 @@
             padding: 12px 20px;
             border-radius: 10px;
             transition: all 0.3s;
-            background: white;
+            /* MODIFIED: Use new --color-gray variable */
+            background: var(--color-gray); 
         }
 
         .custom-input:focus {
@@ -159,7 +162,8 @@
         /* Quill Editor Height */
         #editor-container {
             height: 300px;
-            background-color: white;
+            /* MODIFIED: Use new --color-gray variable */
+            background-color: var(--color-gray);
             border-radius: 10px;
         }
         .ql-toolbar.ql-snow {
@@ -211,7 +215,8 @@
         .chat-box {
             width: 380px;
             height: 550px;
-            background: white;
+            /* MODIFIED: Changed background to light tint */
+            background: var(--color-gray);
             border-radius: 20px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
             display: none;
@@ -249,13 +254,15 @@
             flex: 1;
             overflow-y: auto;
             padding: 20px;
-            background: #f9f9f9;
+            /* MODIFIED: Changed background to lighter tint for contrast */
+            background: var(--color-light);
         }
 
         .chat-quick-answers {
             padding: 15px;
             border-top: 1px solid #e0e0e0;
-            background: white;
+            /* MODIFIED: Changed background to light tint */
+            background: var(--color-gray);
             border-radius: 0 0 20px 20px;
         }
 
@@ -295,7 +302,8 @@
         }
 
         .message.bot .text {
-            background: white;
+            /* MODIFIED: Changed background to light tint */
+            background: var(--color-gray);
             padding: 12px 16px;
             border-radius: 18px 18px 18px 4px;
             max-width: 80%;
@@ -305,7 +313,8 @@
         .quick-btn {
             display: inline-block;
             padding: 8px 14px;
-            background: white;
+            /* MODIFIED: Changed background to light tint */
+            background: var(--color-gray);
             border: 1px solid var(--color-primary);
             color: var(--color-primary);
             border-radius: 20px;
@@ -324,7 +333,8 @@
             display: inline-flex;
             align-items: center;
             padding: 12px 16px;
-            background: white;
+             /* MODIFIED: Changed background to light tint */
+            background: var(--color-gray);
             border-radius: 18px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
@@ -413,7 +423,7 @@
 
         /* NEW: Comment Section Styling */
         .comment {
-            background: #f9f9f9;
+            background: var(--color-light); /* MODIFIED */
             border-radius: 12px;
             padding: 16px;
             margin-bottom: 16px;
@@ -438,7 +448,8 @@
 <body>
 
     <!-- Header -->
-    <header id="header" class="fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-white/95 backdrop-blur">
+    <!-- MODIFIED: Changed bg-sky-500/95 to bg-sky-50/95 (light tint) -->
+    <header id="header" class="fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-sky-50/95 backdrop-blur">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
             <div class="flex items-center space-x-3">
                 <a href="#home" class="flex items-center space-x-3">
@@ -477,7 +488,8 @@
 
     <!-- Mobile Menu -->
     <div id="mobileMenu" class="fixed inset-0 z-[60] bg-black/50 hidden">
-        <div class="absolute right-0 top-0 h-full w-80 bg-white shadow-2xl transform translate-x-full transition-transform duration-300" id="mobileMenuPanel">
+        <!-- MODIFIED: Changed bg-sky-500 to bg-sky-50 (light tint) -->
+        <div class="absolute right-0 top-0 h-full w-80 bg-sky-50 shadow-2xl transform translate-x-full transition-transform duration-300" id="mobileMenuPanel">
             <div class="p-6">
                 <div class="flex justify-between items-center mb-8">
                     <h3 class="text-xl font-bold text-[var(--color-dark)]">Menu</h3>
@@ -579,6 +591,7 @@
         </section>
 
         <!-- About Section -->
+        <!-- MODIFIED: Changed bg-sky-500 to bg-[var(--color-gray)] -->
         <section id="about" class="page-section py-20 bg-[var(--color-gray)]">
             <div class="container mx-auto px-6">
                 <div class="grid md:grid-cols-2 gap-12 items-center">
@@ -638,6 +651,7 @@
         </section>
 
         <!-- Services Grid -->
+        <!-- MODIFIED: Changed bg-sky-500 to bg-white -->
         <section id="services" class="page-section py-20 bg-white">
             <div class="container mx-auto px-6">
                 <div class="text-center mb-12">
@@ -759,6 +773,7 @@
         </section>
 
         <!-- Featured Destinations -->
+        <!-- MODIFIED: Changed bg-sky-500 to bg-[var(--color-gray)] -->
         <section id="destinations" class="page-section py-20 bg-[var(--color-gray)]">
             <div class="container mx-auto px-6">
                 <div class="text-center mb-12">
@@ -836,6 +851,7 @@
         </section>
 
         <!-- Testimonials -->
+        <!-- MODIFIED: Changed bg-sky-500 to bg-white -->
         <section id="testimonials" class="page-section py-20 bg-white">
             <div class="container mx-auto px-6">
                 <div class="text-center mb-12">
@@ -847,6 +863,7 @@
 
                 <div class="grid md:grid-cols-3 gap-8">
                     <!-- Testimonial 1 -->
+                    <!-- MODIFIED: Changed bg-sky-100 to bg-[var(--color-gray)] -->
                     <div class="bg-[var(--color-gray)] rounded-2xl p-8 text-center shadow-lg" data-aos="fade-up">
                         <div class="mb-6">
                             <div class="w-20 h-20 bg-gradient-to-br from-[var(--color-primary)] to-orange-400 rounded-full mx-auto mb-4 flex items-center justify-center text-white text-2xl font-bold">
@@ -864,6 +881,7 @@
                     </div>
 
                     <!-- Testimonial 2 -->
+                    <!-- MODIFIED: Changed bg-sky-100 to bg-[var(--color-gray)] -->
                     <div class="bg-[var(--color-gray)] rounded-2xl p-8 text-center shadow-lg" data-aos="fade-up" data-aos-delay="100">
                         <div class="mb-6">
                             <div class="w-20 h-20 bg-gradient-to-br from-[var(--color-secondary)] to-blue-400 rounded-full mx-auto mb-4 flex items-center justify-center text-white text-2xl font-bold">
@@ -881,6 +899,7 @@
                     </div>
 
                     <!-- Testimonial 3 -->
+                    <!-- MODIFIED: Changed bg-sky-100 to bg-[var(--color-gray)] -->
                     <div class="bg-[var(--color-gray)] rounded-2xl p-8 text-center shadow-lg" data-aos="fade-up" data-aos-delay="200">
                         <div class="mb-6">
                             <div class="w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-400 rounded-full mx-auto mb-4 flex items-center justify-center text-white text-2xl font-bold">
@@ -898,6 +917,7 @@
                     </div>
 
                     <!-- Testimonial 4 -->
+                    <!-- MODIFIED: Changed bg-sky-100 to bg-[var(--color-gray)] -->
                     <div class="bg-[var(--color-gray)] rounded-2xl p-8 text-center shadow-lg" data-aos="fade-up" data-aos-delay="300">
                         <div class="mb-6">
                             <div class="w-20 h-20 bg-gradient-to-br from-green-500 to-teal-400 rounded-full mx-auto mb-4 flex items-center justify-center text-white text-2xl font-bold">
@@ -915,6 +935,7 @@
                     </div>
 
                     <!-- Testimonial 5 -->
+                    <!-- MODIFIED: Changed bg-sky-100 to bg-[var(--color-gray)] -->
                     <div class="bg-[var(--color-gray)] rounded-2xl p-8 text-center shadow-lg" data-aos="fade-up" data-aos-delay="400">
                         <div class="mb-6">
                             <div class="w-20 h-20 bg-gradient-to-br from-red-500 to-orange-400 rounded-full mx-auto mb-4 flex items-center justify-center text-white text-2xl font-bold">
@@ -932,6 +953,7 @@
                     </div>
 
                     <!-- Testimonial 6 -->
+                    <!-- MODIFIED: Changed bg-sky-100 to bg-[var(--color-gray)] -->
                     <div class="bg-[var(--color-gray)] rounded-2xl p-8 text-center shadow-lg" data-aos="fade-up" data-aos-delay="500">
                         <div class="mb-6">
                             <div class="w-20 h-20 bg-gradient-to-br from-[var(--color-accent)] to-yellow-400 rounded-full mx-auto mb-4 flex items-center justify-center text-white text-2xl font-bold">
@@ -952,6 +974,7 @@
         </section>
 
         <!-- FAQ Section -->
+        <!-- MODIFIED: Changed bg-sky-500 to bg-[var(--color-gray)] -->
         <section id="faq" class="page-section py-20 bg-[var(--color-gray)]">
             <div class="container mx-auto px-6 max-w-4xl">
                 <div class="text-center mb-12">
@@ -963,6 +986,7 @@
 
                 <div class="space-y-4" data-aos="fade-up" data-aos-delay="200">
                     <!-- FAQ Item 1 -->
+                    <!-- MODIFIED: Changed bg-sky-100 to bg-white -->
                     <div class="bg-white rounded-xl">
                         <button class="w-full px-6 py-4 text-left flex justify-between items-center" onclick="toggleAccordion(this)">
                             <span class="font-semibold">How do I book services with SunShine Travel?</span>
@@ -978,6 +1002,7 @@
                     </div>
 
                     <!-- FAQ Item 2 -->
+                    <!-- MODIFIED: Changed bg-sky-100 to bg-white -->
                     <div class="bg-white rounded-xl">
                         <button class="w-full px-6 py-4 text-left flex justify-between items-center" onclick="toggleAccordion(this)">
                             <span class="font-semibold">What documents do I need for visa assistance?</span>
@@ -993,6 +1018,7 @@
                     </div>
 
                     <!-- FAQ Item 3 -->
+                    <!-- MODIFIED: Changed bg-sky-100 to bg-white -->
                     <div class="bg-white rounded-xl">
                         <button class="w-full px-6 py-4 text-left flex justify-between items-center" onclick="toggleAccordion(this)">
                             <span class="font-semibold">Do you offer group discounts?</span>
@@ -1007,6 +1033,7 @@
                     </div>
 
                     <!-- FAQ Item 4 -->
+                    <!-- MODIFIED: Changed bg-sky-100 to bg-white -->
                     <div class="bg-white rounded-xl">
                         <button class="w-full px-6 py-4 text-left flex justify-between items-center" onclick="toggleAccordion(this)">
                             <span class="font-semibold">What is your cancellation policy?</span>
@@ -1022,6 +1049,7 @@
                     </div>
 
                     <!-- FAQ Item 5 -->
+                    <!-- MODIFIED: Changed bg-sky-100 to bg-white -->
                     <div class="bg-white rounded-xl">
                         <button class="w-full px-6 py-4 text-left flex justify-between items-center" onclick="toggleAccordion(this)">
                             <span class="font-semibold">Can you help with emergency travel arrangements?</span>
@@ -1059,6 +1087,7 @@
         </section>
 
         <!-- Contact Section -->
+        <!-- MODIFIED: Changed bg-sky-500 to bg-white -->
         <section id="contact" class="page-section py-20 bg-white">
             <div class="container mx-auto px-6">
                 <div class="grid md:grid-cols-2 gap-12">
@@ -1124,6 +1153,7 @@
 
                     <!-- Contact Form -->
                     <div data-aos="fade-left">
+                        <!-- MODIFIED: Changed bg-sky-100 to bg-[var(--color-gray)] -->
                         <form class="bg-[var(--color-gray)] rounded-2xl p-8 shadow-lg" id="contactForm">
                             <h3 class="text-2xl font-bold mb-6">Send Us a Message</h3>
                             
@@ -1185,6 +1215,7 @@
     -->
 
     <!-- Blog List Page -->
+    <!-- MODIFIED: Changed bg-sky-500 to bg-white -->
     <section id="blog-page" class="page-section hidden bg-white py-20">
         <div class="container mx-auto px-6">
             <h2 class="text-4xl md:text-5xl font-bold mb-12 text-center" data-aos="fade-up">
@@ -1198,6 +1229,7 @@
     </section>
 
     <!-- Single Blog Post Page -->
+    <!-- MODIFIED: Changed bg-sky-500 to bg-white -->
     <section id="blog-post-page" class="page-section hidden bg-white py-20">
         <div class="container mx-auto px-6 max-w-3xl">
             <!-- Container for the post content itself -->
@@ -1211,6 +1243,7 @@
                 <h3 class="text-3xl font-bold mb-6">Leave a Comment</h3>
                 
                 <!-- Comment Form -->
+                <!-- MODIFIED: Changed bg-sky-100 to bg-gray-50 (revert) -->
                 <form id="comment-form" class="bg-gray-50 p-6 rounded-lg shadow-sm mb-12">
                     <div class="mb-4">
                         <label for="comment-name" class="block text-sm font-medium text-gray-700 mb-2">Name *</label>
@@ -1245,7 +1278,9 @@
 
     <!-- Admin Login Page -->
     <!-- MODIFIED: Title changed -->
+    <!-- MODIFIED: Changed bg-sky-500 to bg-[var(--color-gray)] -->
     <section id="admin-login-page" class="page-section hidden bg-[var(--color-gray)] py-20 flex items-center justify-center">
+        <!-- MODIFIED: Changed bg-sky-100 to bg-white (revert) -->
         <div class="bg-white rounded-2xl p-8 shadow-lg max-w-md w-full" data-aos="zoom-in">
             <h2 class="text-3xl font-bold text-center mb-6">Login</h2>
             <form id="admin-login-form">
@@ -1266,6 +1301,7 @@
     </section>
 
     <!-- Admin Dashboard Page -->
+    <!-- MODIFIED: Changed bg-sky-500 to bg-[var(--color-gray)] -->
     <section id="admin-dashboard-page" class="page-section hidden bg-[var(--color-gray)] py-20">
         <div class="container mx-auto px-6">
             <div class="flex justify-between items-center mb-8">
@@ -1276,6 +1312,7 @@
             </div>
 
             <!-- Create/Edit Post Form -->
+            <!-- MODIFIED: Changed bg-sky-100 to bg-white (revert) -->
             <div class="bg-white rounded-2xl p-8 shadow-lg mb-12">
                 <h3 id="form-title" class="text-2xl font-bold mb-6">Create New Post</h3>
                 <form id="post-form" data-editing-id="">
@@ -1310,6 +1347,7 @@
             </div>
 
             <!-- Manage Posts List -->
+            <!-- MODIFIED: Changed bg-sky-100 to bg-white (revert) -->
             <div class="bg-white rounded-2xl p-8 shadow-lg mb-12">
                 <h3 class="text-2xl font-bold mb-6">Manage Posts</h3>
                 <div class="overflow-x-auto">
@@ -1330,6 +1368,7 @@
             </div>
 
             <!-- NEW: Manage Comments List -->
+            <!-- MODIFIED: Changed bg-sky-100 to bg-white (revert) -->
             <div class="bg-white rounded-2xl p-8 shadow-lg">
                 <h3 class="text-2xl font-bold mb-6">Manage Comments</h3>
                 <div class="overflow-x-auto">
@@ -1463,6 +1502,7 @@
 
     <!-- Form Success Modal -->
     <div id="formSuccessModal" class="fixed inset-0 z-[70] bg-black/50 hidden flex items-center justify-center p-4">
+        <!-- MODIFIED: Changed bg-sky-100 to bg-white (revert) -->
         <div class="bg-white rounded-2xl shadow-xl p-8 max-w-sm w-full text-center" data-aos="zoom-in">
             <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
                 <i class="fas fa-check text-3xl"></i>
@@ -1870,6 +1910,7 @@
             }
 
             blogListContainer.innerHTML = posts.map(post => `
+                <!-- MODIFIED: Changed bg-sky-100 to bg-white (revert) -->
                 <a href="#blog-post?id=${post.id}" class="block bg-white rounded-2xl shadow-lg card-hover" data-aos="fade-up">
                     <img src="${post.image_url}" alt="${post.title}" class="w-full h-56 object-cover rounded-t-2xl">
                     <div class="p-6">
@@ -2357,6 +2398,4 @@
     </script>
 </body>
 </html>
-
-
 
